@@ -53,29 +53,77 @@ Keep the rest of the head the same unless the group agrees otherwise. Do not use
 
 ---
 
-## 4. Folder and notebook structure to follow
+## 4. How the GRU was created, step by step (and the folder to follow)
 
-```
-gru/
-├── 01_Setup/                GRU_Setup.ipynb                libraries, dataset, settings, helper code
-├── 02_Data_Audit/           GRU_Data_Audit.ipynb           missing values, duplicates, encoding, outliers
-├── 03_Dataset_and_Split/    GRU_Dataset_and_Split.ipynb    labels and the 80/10/10 split
-├── 04_EDA/                  GRU_EDA.ipynb                  exploratory analysis (training set)
-├── 05_Feature_Engineering/  GRU_Feature_Engineering.ipynb  cleaning, vocabulary, ids, padding
-├── 06_Class_Weights/        GRU_Class_Weights.ipynb
-├── 07_GRU_Model/            GRU_Model.ipynb                architecture and parameter count      <- changes
-├── 08_Training/             GRU_Training.ipynb             training with early stopping          <- changes
-├── 09_Learning_Curves/      GRU_Learning_Curves.ipynb
-├── 10_Final_Evaluation/     GRU_Final_Evaluation.ipynb     the ONE test-set evaluation
-├── 11_Error_Analysis/       GRU_Error_Analysis.ipynb
-├── 12_Robustness_Check/     GRU_Robustness_Check.ipynb     5 other random seeds
-├── 13_Handover/             GRU_Handover.ipynb             row for the comparison table
-├── 14_Optional_Extension/   GRU_Optional_Extension.ipynb   optional, GRU only
-├── results/                 all outputs
-└── docs/                    report section and viva notes
+The GRU part is **14 notebooks, one per step**, each in its own numbered folder inside `gru/`. Do the same steps in the same order for your model. Notebooks 01 to 06 are about the data and do not depend on the model, so they are the same for everyone.
+
+| Notebook (in `gru/`) | What was done | Why, and the key numbers |
+|---|---|---|
+| `01_Setup/GRU_Setup.ipynb` | Checked the libraries, found the dataset, and defined the settings and helper code (the five cells to copy) | One place for every shared setting, so a notebook needs no other file |
+| `02_Data_Audit/GRU_Data_Audit.ipynb` | Checked missing values (none), duplicates (4 exact copies), encoding (all ASCII) and outliers (75 long reviews, 4.7%, kept) | Clean the data before modelling. Duplicates go before the split so a copy cannot leak into the test set. Outliers are real reviews, and long ones are cut to 300 words |
+| `03_Dataset_and_Split/GRU_Dataset_and_Split.ipynb` | Encoded the labels (`polarity` to 0/1) and made the stratified 80/10/10 split, saved as fixed lists of row ids | The same 1,276 / 160 / 160 split for every model |
+| `04_EDA/GRU_EDA.ipynb` | Looked at the training set only: class balance (balanced), length by class, negation (96% of negative vs 60% of positive reviews contain one), the words that separate the classes, and a length-only shortcut check (67.5%) | Understand the data before choosing settings, and check for shortcuts |
+| `05_Feature_Engineering/GRU_Feature_Engineering.ipynb` | Turned text into numbers: clean, split into words, vocabulary (training only), word ids, pad to 300. Checked that ids decode back to words | `MAX_LEN` 300 keeps 94% of reviews whole, and 5,000 words cover 98% of the training words |
+| `06_Class_Weights/GRU_Class_Weights.ipynb` | Computed the class weights from the training labels | The same imbalance-safe procedure for every model (about 1.0 here) |
+| `07_GRU_Model/GRU_Model.ipynb` | Built the architecture and counted its parameters (347,073, of which 92% are in the Embedding) | See "Building the model" below. **The same `build_gru()` function also appears in notebooks 08 to 14**, so that each notebook can run on its own |
+| `08_Training/GRU_Training.ipynb` | Trained with Adam and early stopping on validation loss, then saved the model and its history | Validation guides training. The test set is not touched |
+| `09_Learning_Curves/GRU_Learning_Curves.ipynb` | Plotted training vs validation accuracy and loss, and read them | The GRU overfits: best epoch 5, stopped at epoch 10 |
+| `10_Final_Evaluation/GRU_Final_Evaluation.ipynb` | Evaluated **once** on the test set and saved the metrics, predictions and figures | The honest final result: 88.1% accuracy, 0.937 ROC-AUC |
+| `11_Error_Analysis/GRU_Error_Analysis.ipynb` | Counted the four outcomes, the per-class scores, errors by length and origin, and the most confident mistakes | Explains the result. Nothing is changed afterwards |
+| `12_Robustness_Check/GRU_Robustness_Check.ipynb` | Re-trained with 5 other random seeds | Shows the run-to-run spread (88.1% ± 1.6%). The headline stays seed 42 |
+| `13_Handover/GRU_Handover.ipynb` | Printed the row for the group table and listed the files | Everything the group needs in one place |
+| `14_Optional_Extension/GRU_Optional_Extension.ipynb` | Found that very short reviews fail, trained a second GRU with extra short examples, and built a "try your own reviews" demo | Optional and GRU only. It is not part of the comparison |
+
+Everything is saved in `gru/results/`, and the report section and viva notes are in `gru/docs/`.
+
+### Building the model (notebooks 07 and 08)
+
+The choices came from **reasoning about the data, not from trying many values**, which would risk tuning on the test set. The training set is small (1,276 reviews of about 130 words), so everything is kept small.
+
+| Layer | Choice | Why |
+|---|---|---|
+| `Embedding(5000, 64)` | 64 numbers per word, learned from scratch | Turns a word id into a vector where similar words sit close together. Small, because there are only 1,276 reviews to learn from |
+| `GRU(64)` | 64 memory units, returns the final state | Reads the review in order and keeps a memory that two gates update, so it can carry a word like "not" across a sentence. 64 units is enough for a 130-word review but too small to memorise the training set. It has fewer parameters than an LSTM |
+| `Dropout(0.5)` | Switches off half of the GRU outputs while training | The strongest protection, placed where memorising is most likely |
+| `Dense(32, "relu")` | One small hidden layer | Combines the 64 features. ReLU is simple and does not saturate |
+| `Dropout(0.3)` | A lighter dropout | The layer is small, so less is dropped |
+| `Dense(1, "sigmoid")` | One output between 0 and 1 | Read as P(positive). It pairs with binary cross-entropy |
+
+```python
+def build_gru():                                     # notebook 07
+    return keras.Sequential([
+        layers.Input(shape=(MAX_LEN,)),
+        layers.Embedding(VOCAB_SIZE, EMBED_DIM),
+        layers.GRU(64),
+        layers.Dropout(0.5),
+        layers.Dense(32, activation="relu"),
+        layers.Dropout(0.3),
+        layers.Dense(1, activation="sigmoid"),
+    ], name="gru_sentiment")
+
+model.compile(optimizer=keras.optimizers.Adam(learning_rate=LEARNING_RATE),   # notebook 08
+              loss="binary_crossentropy", metrics=["accuracy"])
+early_stop = keras.callbacks.EarlyStopping(monitor="val_loss", patience=5, restore_best_weights=True)
+model.fit(X_train, y_train, validation_data=(X_val, y_val), epochs=30, batch_size=32,
+          class_weight=class_weight, callbacks=[early_stop])
 ```
 
-The quickest way: **copy the whole `gru/` folder, rename it, rename the notebooks and the `gru_` file prefix to your model's name, then edit notebooks 07 and 08** (plus the wording in the others). Notebooks 01 to 06 do not depend on the model, so they will be the same for everyone.
+For your own model, explain each layer the same way in your report: one sentence on what it does and one on why that size.
+
+### The quickest way to start
+
+**Copy the whole `gru/` folder, rename it, and replace every "GRU" and "gru" in the notebooks with your model's name.** That renames the folders, the notebook files, the result files and the wording in one pass. Then change the architecture.
+
+Note that **the model is defined in 7 of the notebooks in your copy** (07 to 13), not only in 07 and 08, because each notebook is self-contained and can rebuild the model on its own. So change the layer in **every** notebook that has a `build_*()` function, not just the first two. A find-and-replace across the folder is the safest way:
+
+1. Copy `gru/` to `lstm/` (or your model's folder name) and delete `results/`, `docs/` and `14_Optional_Extension/` (that one is GRU only).
+2. **1D CNN only, and do this first.** In every notebook, replace the line `layers.GRU(64),` with `layers.Conv1D(128, 5, activation="relu"),` followed by `layers.GlobalMaxPooling1D(),`. It appears once in each of notebooks 07 to 13. If you rename first (step 3), the line becomes `layers.CNN1D(64)`, which is not a layer.
+3. Replace `GRU` with your model's name (`LSTM`, `SimpleRNN` or `CNN1D`) and `gru` with the file prefix (`lstm`, `simple_rnn` or `cnn1d`) in every notebook (VS Code: *Edit → Replace in Files*, with **Match Case** on and the folder selected). This renames the functions and the result files (`gru_metrics.json` becomes `lstm_metrics.json`). For the LSTM and the Simple RNN it also swaps the layer (`layers.GRU(64)` becomes `layers.LSTM(64)` or `layers.SimpleRNN(64)`), so there is nothing more to change. Rename the folders and notebook files to match too, but keep `01_Setup` exactly as it is.
+4. **Check your copy.** Searching the folder for `GRU` or `gru` should find nothing in the code, and searching for `layers.` should show the same architecture in notebooks 07 to 13.
+5. Update the explanations: the architecture table in notebook 07, the theory in your report, and the notebook titles.
+6. Run the notebooks in order, 01 to 13.
+
+This was tested in exactly this order: an LSTM, a Simple RNN and a 1D CNN were built this way, and all 13 notebooks ran without a single error for each, producing the correct architecture and result files.
 
 Rules each notebook follows, and yours should too:
 
