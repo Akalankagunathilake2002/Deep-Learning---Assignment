@@ -1,0 +1,22 @@
+{
+ "maxLen": 300,
+ "vocabSize": 5000,
+ "padToken": "<PAD>",
+ "oovToken": "<OOV>",
+ "padding": "pre",
+ "truncating": "post",
+ "threshold": 0.5,
+ "minTrainWords": 25,
+ "models": [
+  {
+   "id": "main",
+   "name": "Main GRU",
+   "dir": "main"
+  },
+  {
+   "id": "short",
+   "name": "GRU + short examples",
+   "dir": "short"
+  }
+ ]
+}
