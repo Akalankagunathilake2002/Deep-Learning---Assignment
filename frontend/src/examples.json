@@ -1,0 +1,50 @@
+[
+  {
+    "id": "positive",
+    "label": "Positive",
+    "hint": "A clearly positive review",
+    "text": "We stayed here for our anniversary and it was perfect. The room was bright and spotless, the bed was incredibly comfortable, and the staff greeted us by name. Dinner at the hotel restaurant was delicious and the view from our window was beautiful. We will definitely be back."
+  },
+  {
+    "id": "negative",
+    "label": "Negative",
+    "hint": "A clearly negative review",
+    "text": "Awful experience. We arrived late and the front desk had lost our reservation, and the manager was rude about it. The room smelled of smoke, the sheets were stained and the bathroom was filthy. The noise from the hallway kept us up all night. I want my money back."
+  },
+  {
+    "id": "negation",
+    "label": "Negation",
+    "hint": "Every sentence uses \"not\"",
+    "text": "Not good at all. I would not recommend this hotel to anyone. The room was not clean, the staff were not helpful and the breakfast was not worth the price. We did not get any apology when we complained, and we will not be coming back."
+  },
+  {
+    "id": "mixed-location",
+    "label": "Mixed: location vs bed",
+    "hint": "Praise and complaint together",
+    "text": "Great location but the bed was uncomfortable and very noisy. We could walk to the shops and restaurants in a few minutes, which was perfect. Unfortunately the mattress was hard and the street noise made it hard to sleep, so we were tired the whole trip."
+  },
+  {
+    "id": "mixed-breakfast",
+    "label": "Mixed: breakfast vs room",
+    "hint": "Praise and complaint together",
+    "text": "The breakfast was excellent and the staff were lovely, however the room was tiny and smelled of smoke. The lobby and the restaurant looked great, but our room was old and the shower barely worked. Nice people, disappointing room."
+  },
+  {
+    "id": "short-negative",
+    "label": "Short negative",
+    "hint": "One line, fewer than 25 words",
+    "text": "Terrible hotel, dirty room and rude staff."
+  },
+  {
+    "id": "short-positive",
+    "label": "Short positive",
+    "hint": "One line, fewer than 25 words",
+    "text": "Great hotel, lovely staff and a spotless room."
+  },
+  {
+    "id": "tricky",
+    "label": "Tricky wording",
+    "hint": "A known miss for both models",
+    "text": "very bad place to visit never ever again visit to this place"
+  }
+]
