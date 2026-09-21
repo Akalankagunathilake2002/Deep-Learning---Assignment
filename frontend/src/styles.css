@@ -99,10 +99,42 @@ h3 {
 }
 
 /* ---------- layout ---------- */
+.layout-root {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: var(--bg);
+}
+
+.sidebar {
+  width: 280px;
+  flex: 0 0 280px;
+  background: var(--surface);
+  border-right: 1px solid var(--line);
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 50;
+  transition: transform 0.25s ease-in-out;
+}
+
+.main-content-wrapper {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
 .app {
   max-width: 1100px;
+  width: 100%;
   margin: 0 auto;
-  padding: 24px 16px 40px;
+  padding: 24px 20px 48px;
 }
 
 .header {
@@ -668,3 +700,319 @@ tbody th {
   display: grid;
   gap: 10px;
 }
+
+/* ---------- Sidebar & Model Selection ---------- */
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 6px 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.sidebar-logo {
+  color: var(--pos);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar-title {
+  display: block;
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+.sidebar-subtitle {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--ink-2);
+}
+
+.sidebar-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+  padding: 4px 8px 0;
+}
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sidebar-model-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: transparent;
+  border: 1px solid transparent;
+  text-align: left;
+  cursor: pointer;
+  color: var(--ink);
+  font: inherit;
+  transition: all 0.18s ease;
+}
+
+.sidebar-model-btn:hover {
+  background: var(--surface-2);
+  border-color: var(--line);
+}
+
+.sidebar-model-btn.active {
+  background: var(--surface-2);
+  border-color: var(--pos);
+  box-shadow: 0 0 0 1px var(--pos), var(--shadow);
+}
+
+.sidebar-model-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--ink-2);
+  flex-shrink: 0;
+  transition: all 0.18s ease;
+}
+
+.sidebar-model-btn.active .sidebar-model-icon {
+  background: var(--pos);
+  color: #ffffff;
+  border-color: var(--pos);
+}
+
+.sidebar-model-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sidebar-model-name-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.sidebar-model-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--ink);
+}
+
+.sidebar-model-sub {
+  display: block;
+  font-size: 0.76rem;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.66rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.status-badge.active {
+  background: var(--pos-tint);
+  color: var(--pos);
+  border: 1px solid rgba(42, 120, 214, 0.3);
+}
+
+.status-badge.pending {
+  background: var(--surface-2);
+  color: var(--ink-2);
+  border: 1px solid var(--line);
+}
+
+/* Sidebar Footer */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 14px;
+  font-size: 0.8rem;
+}
+
+.sidebar-footer-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.sidebar-meta-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.75rem;
+  color: var(--ink-2);
+}
+
+.sidebar-meta-list span {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Mobile Header & Responsive Drawer */
+.mobile-header {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  .layout-root {
+    flex-direction: column;
+  }
+
+  .mobile-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--line);
+    position: sticky;
+    top: 0;
+    z-index: 40;
+  }
+
+  .mobile-nav-toggle {
+    background: none;
+    border: none;
+    color: var(--ink);
+    padding: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+  }
+
+  .mobile-nav-toggle:hover {
+    background: var(--surface-2);
+  }
+
+  .mobile-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+    transform: translateX(-100%);
+    box-shadow: 2px 0 16px rgba(0, 0, 0, 0.15);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(2px);
+    z-index: 45;
+  }
+}
+
+/* ---------- Under Development Model Screen ---------- */
+.header-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 2px;
+}
+
+.dev-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 56px 28px;
+  max-width: 540px;
+  margin: 36px auto;
+  border-radius: var(--radius);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+}
+
+.dev-badge-wrap {
+  margin-bottom: 16px;
+}
+
+.dev-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-2);
+  margin-bottom: 18px;
+}
+
+.dev-card h1 {
+  font-size: 1.55rem;
+  margin-bottom: 6px;
+  color: var(--ink);
+}
+
+.dev-arch-tag {
+  margin-bottom: 14px;
+}
+
+.dev-arch-tag code {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  background: var(--surface-2);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  color: var(--pos);
+}
+
+.dev-message {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  max-width: 420px;
+  margin: 0 auto 24px;
+}
+
+.dev-action {
+  display: flex;
+  justify-content: center;
+}
+

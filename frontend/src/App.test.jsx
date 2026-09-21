@@ -130,3 +130,48 @@ describe("when the models cannot be loaded", () => {
     expect(screen.getByRole("button", { name: "Analyze review" })).toBeDisabled();
   });
 });
+
+describe("Sidebar and Model Selection", () => {
+  it("renders all four model buttons with GRU initially selected", async () => {
+    await openApp();
+    expect(screen.getByRole("button", { name: /RNN/ })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /LSTM/ })).toBeInTheDocument();
+    const gruBtn = screen.getByRole("button", { name: /GRU/ });
+    expect(gruBtn).toBeInTheDocument();
+    expect(gruBtn).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("button", { name: /1D CNN/ })).toBeInTheDocument();
+  });
+
+  it("switches to RNN profile and shows Under Development status", async () => {
+    await openApp();
+    fireEvent.click(screen.getByRole("button", { name: /RNN/ }));
+    expect(await screen.findByRole("heading", { name: "Simple RNN" })).toBeInTheDocument();
+    expect(screen.getByText("Under Development")).toBeInTheDocument();
+    expect(screen.getByText("SimpleRNN(64)")).toBeInTheDocument();
+    expect(screen.queryByLabelText("Hotel review")).not.toBeInTheDocument();
+  });
+
+  it("switches to LSTM profile and 1D CNN profile", async () => {
+    await openApp();
+    fireEvent.click(screen.getByRole("button", { name: /LSTM/ }));
+    expect(await screen.findByRole("heading", { name: "LSTM" })).toBeInTheDocument();
+    expect(screen.getByText("LSTM(64)")).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /1D CNN/ }));
+    expect(await screen.findByRole("heading", { name: "1D CNN" })).toBeInTheDocument();
+    expect(screen.getByText("Conv1D(64, kernel_size=3)")).toBeInTheDocument();
+  });
+
+  it("returns to GRU and restores the live sentiment analyzer", async () => {
+    await openApp();
+    fireEvent.click(screen.getByRole("button", { name: /LSTM/ }));
+    expect(screen.queryByLabelText("Hotel review")).not.toBeInTheDocument();
+
+    const switchBtn = screen.getByRole("button", { name: /Try Live GRU Model/ });
+    fireEvent.click(switchBtn);
+
+    expect(await screen.findByLabelText("Hotel review")).toBeInTheDocument();
+    expect(screen.getByRole("tab", { name: "Try it" })).toBeInTheDocument();
+  });
+});
+
