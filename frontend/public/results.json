@@ -94,5 +94,131 @@
   "train": 1276,
   "validation": 160,
   "test": 160
+ },
+ "lstm": {
+  "name": "Unidirectional LSTM",
+  "architecture": "LSTM(64)",
+  "accuracy": 0.93125,
+  "precision": 0.9367088607594937,
+  "recall": 0.925,
+  "f1": 0.9308176100628931,
+  "roc_auc": 0.9532812500000001,
+  "training_time_sec": 43.97,
+  "trainable_params": 355137,
+  "epochs_run": 12,
+  "best_epoch": 7,
+  "confusion_matrix": {
+   "tn": 75,
+   "fp": 5,
+   "fn": 6,
+   "tp": 74
+  },
+  "bootstrap_95ci": {
+   "accuracy": [
+    0.8875,
+    0.96875
+   ],
+   "f1": [
+    0.8862195072941366,
+    0.968944099378882
+   ],
+   "roc_auc": [
+    0.9083887195533271,
+    0.9881209833526906
+   ]
+  },
+  "validation_accuracy": 0.956250011920929,
+  "robustness": {
+   "runs": 6,
+   "test_acc_mean": 0.8968750000000001,
+   "test_acc_std": 0.019665165903190354,
+   "test_f1_mean": 0.894004348358849,
+   "test_f1_std": 0.020363481871202044,
+   "test_auc_mean": 0.938984375,
+   "test_auc_std": 0.009297991004445469,
+   "seeds": [
+    {
+     "seed": 42,
+     "epochs": 12,
+     "val_acc": 0.956250011920929,
+     "test_acc": 0.93125,
+     "test_f1": 0.9308176100628932,
+     "test_auc": 0.95328125
+    },
+    {
+     "seed": 1,
+     "epochs": 9,
+     "val_acc": 0.931249976158142,
+     "test_acc": 0.90625,
+     "test_f1": 0.9032258064516128,
+     "test_auc": 0.938125
+    },
+    {
+     "seed": 2,
+     "epochs": 9,
+     "val_acc": 0.9375,
+     "test_acc": 0.89375,
+     "test_f1": 0.8903225806451613,
+     "test_auc": 0.93796875
+    },
+    {
+     "seed": 3,
+     "epochs": 8,
+     "val_acc": 0.943750023841858,
+     "test_acc": 0.8875,
+     "test_f1": 0.88,
+     "test_auc": 0.9378125
+    },
+    {
+     "seed": 4,
+     "epochs": 10,
+     "val_acc": 0.943750023841858,
+     "test_acc": 0.875,
+     "test_f1": 0.8765432098765432,
+     "test_auc": 0.9243750000000002
+    },
+    {
+     "seed": 5,
+     "epochs": 9,
+     "val_acc": 0.943750023841858,
+     "test_acc": 0.8875,
+     "test_f1": 0.8831168831168831,
+     "test_auc": 0.94234375
+    }
+   ]
+  },
+  "architecture_comparison": [
+   {
+    "architecture": "Unidirectional LSTM",
+    "recurrent_params": 33024,
+    "total_params": 355137,
+    "best_epoch": 5,
+    "val_loss": 0.198,
+    "val_accuracy": 0.9312,
+    "val_f1": 0.9325,
+    "selected": true
+   },
+   {
+    "architecture": "Bidirectional LSTM",
+    "recurrent_params": 66048,
+    "total_params": 390209,
+    "best_epoch": 4,
+    "val_loss": 0.224,
+    "val_accuracy": 0.925,
+    "val_f1": 0.9268,
+    "selected": false
+   }
+  ],
+  "figures": {
+   "accuracy_curve": "lstm_accuracy_curve.png",
+   "loss_curve": "lstm_loss_curve.png",
+   "confusion_matrix": "lstm_confusion_matrix.png",
+   "roc_curve": "lstm_roc_curve.png",
+   "probability_hist": "lstm_probability_hist.png",
+   "review_length": "lstm_eda_review_length.png",
+   "class_balance": "lstm_eda_class_balance.png",
+   "distinctive_words": "lstm_eda_distinctive_words.png",
+   "length_outliers": "lstm_audit_length_outliers.png"
+  }
  }
 }
