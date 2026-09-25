@@ -177,7 +177,7 @@ export default function App({ load }) {
             </>
           ) : (
             <main>
-              <ModelProfile modelId={activeModel} onSelectGru={() => setActiveModel("gru")} />
+              <ModelProfile modelId={activeModel} state={state} onSelectGru={() => setActiveModel("gru")} />
               <footer className="footer small muted">
                 SE4050 Deep Learning 2026 · Group Benchmark Project based on TEAM_GUIDE.md
               </footer>

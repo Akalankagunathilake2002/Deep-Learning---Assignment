@@ -1,8 +1,9 @@
 import { formatPercent } from "../format.js";
 
 const DESCRIPTION = {
-  main: "Trained on the original reviews",
+  main: "Trained on the original reviews (Reference)",
   short: "Also trained on short examples",
+  cnn1d: "Temporal convolutions with global pooling (Dilmith)",
 };
 
 function Arrow({ up }) {

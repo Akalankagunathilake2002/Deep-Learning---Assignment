@@ -1,3 +1,4 @@
+import { Cnn1dModel } from "./cnn1d.js";
 import { GruModel } from "./gru.js";
 import { LstmModel } from "./lstm.js";
 import { prepareInput } from "./pipeline.js";
@@ -12,7 +13,7 @@ async function get(base, path, kind) {
   return kind === "json" ? res.json() : res.arrayBuffer();
 }
 
-/** Download the vocabulary and both models (about 3 MB in total). Called once when the page opens. */
+/** Download the vocabulary and models (about 4.5 MB in total). Called once when the page opens. */
 export async function loadEngine(base = BASE) {
   const config = await get(base, "model/config.json", "json");
   const vocab = new Map(Object.entries(await get(base, "model/vocab.json", "json"))); // a Map, so "constructor" is just a word
@@ -25,7 +26,19 @@ export async function loadEngine(base = BASE) {
       return { id: m.id, name: m.name, model: new GruModel(manifest, weights) };
     }),
   );
-  return { config, vocab, models };
+
+  let cnnModel = null;
+  try {
+    const [cnnManifest, cnnWeights] = await Promise.all([
+      get(base, "model/cnn1d/manifest.json", "json"),
+      get(base, "model/cnn1d/weights.bin", "arrayBuffer"),
+    ]);
+    cnnModel = new Cnn1dModel(cnnManifest, cnnWeights);
+  } catch (err) {
+    console.warn("Could not load 1D CNN model files:", err);
+  }
+
+  return { config, vocab, models, cnnModel };
 }
 
 /** Load the trained LSTM model exported for the browser. */
@@ -60,6 +73,57 @@ export function analyze(text, engine) {
   return {
     ...prep,
     empty,
+    short: !empty && prep.nWords < config.minTrainWords,
+    disagree: results.length > 1 && results.some((r) => r.label !== results[0].label),
+    results,
+  };
+}
+
+/** Run inference on 1D CNN and compare with GRU reference */
+export function analyzeCnn(text, engine, cnnModelInstance = null) {
+  const { config, vocab, models } = engine;
+  const prep = prepareInput(text, vocab, config);
+  const empty = prep.nWords === 0;
+  if (empty) {
+    return { ...prep, empty: true, short: false, results: [] };
+  }
+
+  const modelToUse = cnnModelInstance || engine.cnnModel;
+  const results = [];
+
+  if (modelToUse) {
+    const t0 = performance.now();
+    const pCnn = modelToUse.predict(prep.input);
+    const ms = Math.max(0.1, performance.now() - t0);
+    results.push({
+      id: "cnn1d",
+      name: "1D CNN (Dilmith)",
+      p: pCnn,
+      label: pCnn >= config.threshold ? "Positive" : "Negative",
+      badge: "Champion",
+      latencyMs: ms,
+    });
+  }
+
+  // Also query Main GRU for direct comparison
+  const mainGru = models?.find((m) => m.id === "main");
+  if (mainGru) {
+    const t0 = performance.now();
+    const pGru = mainGru.model.predict(prep.input);
+    const ms = Math.max(0.1, performance.now() - t0);
+    results.push({
+      id: "main",
+      name: "GRU Reference",
+      p: pGru,
+      label: pGru >= config.threshold ? "Positive" : "Negative",
+      badge: "Reference",
+      latencyMs: ms,
+    });
+  }
+
+  return {
+    ...prep,
+    empty: false,
     short: !empty && prep.nWords < config.minTrainWords,
     disagree: results.length > 1 && results.some((r) => r.label !== results[0].label),
     results,

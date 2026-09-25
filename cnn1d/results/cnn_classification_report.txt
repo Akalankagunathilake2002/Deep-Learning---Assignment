@@ -1,0 +1,13 @@
+Classification Report: 1D CNN Model
+=============================================
+              precision    recall  f1-score   support
+
+    Negative       0.97      0.91      0.94        80
+    Positive       0.92      0.97      0.95        80
+
+    accuracy                           0.94       160
+   macro avg       0.95      0.94      0.94       160
+weighted avg       0.95      0.94      0.94       160
+
+ROC-AUC Score: 0.9702
+Total Parameters: 365,249

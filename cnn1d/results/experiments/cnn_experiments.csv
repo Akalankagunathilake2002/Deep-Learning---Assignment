@@ -1,0 +1,4 @@
+experiment_id,description,embedding_dim,filters,kernel_size,dense_units,dropout,optimizer,batch_size,max_epochs,actual_epochs,best_epoch,train_accuracy,val_accuracy,train_loss,val_loss,generalization_gap,training_time_sec,param_count
+CNN_Exp_1_Compact,"Compact representation (Trigram, 64-dim embedding)",64,64,3,64,0.3,Adam,32,10,9,7,1.0,0.8813,0.0194,0.3167,0.1187,1.8,656577
+CNN_Exp_2_Baseline,"Baseline representation (5-gram, 128-dim embedding)",128,128,5,64,0.5,Adam,32,10,9,7,1.0,0.8813,0.0137,0.2847,0.1187,4.11,1370369
+CNN_Exp_3_HighCapacity,"High capacity feature maps (256 filters, 128 dense units)",128,256,5,128,0.5,Adam,32,10,7,5,0.9929,0.8625,0.044,0.3309,0.1304,5.05,1477121

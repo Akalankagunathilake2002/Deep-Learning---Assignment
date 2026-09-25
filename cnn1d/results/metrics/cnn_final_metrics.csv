@@ -1,0 +1,2 @@
+Model,Student,Accuracy,Precision,Recall,F1,ROC-AUC,Training Time (s),Parameter Count,Best Epoch,Embedding Dimension,Filters,Kernel Size,Dense Units,Dropout,Batch Size
+1D CNN,Dilmith,0.9437,0.9176,0.975,0.9455,0.9702,6.11,365249,13,64,128,5,32,0.5,32

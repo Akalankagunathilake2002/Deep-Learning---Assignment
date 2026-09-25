@@ -154,8 +154,7 @@ describe("Sidebar and Model Selection", () => {
   it("switches to LSTM profile and 1D CNN profile", async () => {
     await openApp();
     fireEvent.click(screen.getByRole("button", { name: /LSTM/ }));
-    expect(await screen.findByRole("heading", { name: "LSTM" })).toBeInTheDocument();
-    expect(screen.getByText("LSTM(64)")).toBeInTheDocument();
+    expect(await screen.findByText("LSTM Model")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /1D CNN/ }));
     expect(await screen.findByRole("heading", { name: "1D CNN" })).toBeInTheDocument();
@@ -164,7 +163,7 @@ describe("Sidebar and Model Selection", () => {
 
   it("returns to GRU and restores the live sentiment analyzer", async () => {
     await openApp();
-    fireEvent.click(screen.getByRole("button", { name: /LSTM/ }));
+    fireEvent.click(screen.getByRole("button", { name: /RNN/ }));
     expect(screen.queryByLabelText("Hotel review")).not.toBeInTheDocument();
 
     const switchBtn = screen.getByRole("button", { name: /Try Live GRU Model/ });
