@@ -1,0 +1,40 @@
+{
+  "model": "Simple RNN",
+  "accuracy": 0.85,
+  "precision": 0.9,
+  "recall": 0.7875,
+  "f1": 0.84,
+  "roc_auc": 0.89609375,
+  "training_time_sec": 52.07101170400165,
+  "trainable_params": 330369,
+  "total_params": 330369,
+  "epochs_run": 13,
+  "best_epoch": 8,
+  "seed": 42,
+  "max_len": 300,
+  "vocab_size": 5000,
+  "embed_dim": 64,
+  "batch_size": 32,
+  "learning_rate": 0.001,
+  "threshold": 0.5,
+  "confusion_matrix": {
+    "tn": 73,
+    "fp": 7,
+    "fn": 17,
+    "tp": 63
+  },
+  "bootstrap_95ci": {
+    "accuracy": [
+      0.79375,
+      0.9001562499999992
+    ],
+    "f1": [
+      0.771399613899614,
+      0.8987377328971696
+    ],
+    "roc_auc": [
+      0.839124733113354,
+      0.943922305764411
+    ]
+  }
+}
