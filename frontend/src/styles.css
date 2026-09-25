@@ -1016,3 +1016,119 @@ tbody th {
   justify-content: center;
 }
 
+/* 1D CNN Profile Card */
+.cnn-profile-card {
+  max-width: 720px;
+  padding: 40px 32px;
+}
+
+.cnn-author-note {
+  font-size: 0.88rem;
+  color: var(--ink-2);
+  margin-bottom: 6px;
+}
+
+.cnn-summary-text {
+  font-size: 0.92rem;
+  color: var(--ink-2);
+  line-height: 1.5;
+  margin-bottom: 22px;
+}
+
+.cnn-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.cnn-metric-box {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.cnn-metric-box.highlight {
+  border-color: rgba(42, 120, 214, 0.4);
+  background: rgba(42, 120, 214, 0.04);
+}
+
+.cnn-metric-val {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.1;
+  margin-bottom: 4px;
+}
+
+.cnn-metric-box.highlight .cnn-metric-val {
+  color: var(--pos);
+}
+
+.cnn-metric-lbl {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.cnn-metric-cmp {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #10b981;
+}
+
+.cnn-metric-sub {
+  font-size: 0.72rem;
+  color: var(--ink-2);
+}
+
+.cnn-cm-summary {
+  font-size: 0.82rem;
+  padding: 8px 14px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  border: 1px solid var(--line);
+  margin-bottom: 16px;
+  width: 100%;
+  color: var(--ink);
+}
+
+.cnn-architecture-banner {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 24px;
+  width: 100%;
+  text-align: left;
+}
+
+.cnn-arch-title {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ink-2);
+  margin-bottom: 6px;
+}
+
+.cnn-architecture-banner code {
+  display: block;
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--ink);
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+

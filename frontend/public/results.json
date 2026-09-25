@@ -94,5 +94,51 @@
   "train": 1276,
   "validation": 160,
   "test": 160
+ },
+ "cnn1d": {
+  "accuracy": 0.94375,
+  "precision": 0.9176470588235294,
+  "recall": 0.975,
+  "f1": 0.9454545454545454,
+  "roc_auc": 0.97015625,
+  "training_time_sec": 6.11,
+  "trainable_params": 365249,
+  "epochs_run": 18,
+  "best_epoch": 13,
+  "confusion_matrix": {
+   "tn": 73,
+   "fp": 7,
+   "fn": 2,
+   "tp": 78
+  },
+  "bootstrap_95ci": {
+   "accuracy": [
+    0.90625,
+    0.975
+   ],
+   "f1": [
+    0.9053980074965476,
+    0.9772727272727273
+   ],
+   "roc_auc": [
+    0.9401795705339602,
+    0.9937411738247799
+   ]
+  },
+  "validation_accuracy": 0.94375,
+  "filters": 128,
+  "kernel_size": 5,
+  "pooling": "GlobalMaxPooling1D",
+  "dense_units": 32,
+  "dropout": 0.5,
+  "robustness": {
+   "runs": 6,
+   "test_acc_mean": 0.9208333333333333,
+   "test_acc_std": 0.014523687547590834,
+   "test_f1_mean": 0.9228564023775468,
+   "test_f1_std": 0.01483864455856984,
+   "test_auc_mean": 0.9614322916666667,
+   "test_auc_std": 0.005322986877850024
+  }
  }
 }

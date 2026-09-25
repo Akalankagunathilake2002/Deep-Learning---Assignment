@@ -29,11 +29,11 @@ export const MODELS = [
   {
     id: "cnn1d",
     shortName: "1D CNN",
-    fullName: "1D CNN",
+    fullName: "1D CNN (Dilmith)",
     category: "Convolutional",
     desc: "Temporal 1D convolutions with global max pooling",
-    status: "pending",
-    badge: "In Dev",
+    status: "active",
+    badge: "Ready",
   },
 ];
 
