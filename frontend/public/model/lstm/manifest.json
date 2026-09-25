@@ -1,0 +1,67 @@
+{
+ "dtype": "float32",
+ "units": 64,
+ "tensors": {
+  "embedding": {
+   "shape": [
+    5000,
+    64
+   ],
+   "offset": 0,
+   "length": 320000
+  },
+  "lstm_kernel": {
+   "shape": [
+    64,
+    256
+   ],
+   "offset": 320000,
+   "length": 16384
+  },
+  "lstm_recurrent_kernel": {
+   "shape": [
+    64,
+    256
+   ],
+   "offset": 336384,
+   "length": 16384
+  },
+  "lstm_bias": {
+   "shape": [
+    256
+   ],
+   "offset": 352768,
+   "length": 256
+  },
+  "dense1_kernel": {
+   "shape": [
+    64,
+    32
+   ],
+   "offset": 353024,
+   "length": 2048
+  },
+  "dense1_bias": {
+   "shape": [
+    32
+   ],
+   "offset": 355072,
+   "length": 32
+  },
+  "dense2_kernel": {
+   "shape": [
+    32,
+    1
+   ],
+   "offset": 355104,
+   "length": 32
+  },
+  "dense2_bias": {
+   "shape": [
+    1
+   ],
+   "offset": 355136,
+   "length": 1
+  }
+ }
+}

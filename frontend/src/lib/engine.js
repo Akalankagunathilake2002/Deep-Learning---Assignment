@@ -1,5 +1,6 @@
 import { Cnn1dModel } from "./cnn1d.js";
 import { GruModel } from "./gru.js";
+import { LstmModel } from "./lstm.js";
 import { prepareInput } from "./pipeline.js";
 
 const BASE = import.meta.env?.BASE_URL ?? "./";
@@ -38,6 +39,15 @@ export async function loadEngine(base = BASE) {
   }
 
   return { config, vocab, models, cnnModel };
+}
+
+/** Load the trained LSTM model exported for the browser. */
+export async function loadLstmModel(base = BASE) {
+  const [manifest, weights] = await Promise.all([
+    get(base, "model/lstm/manifest.json", "json"),
+    get(base, "model/lstm/weights.bin", "arrayBuffer"),
+  ]);
+  return new LstmModel(manifest, weights);
 }
 
 /** The saved test-set results shown on the Results tab. The page still works if this file is missing. */

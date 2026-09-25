@@ -13,9 +13,9 @@ export const MODELS = [
     shortName: "LSTM",
     fullName: "LSTM",
     category: "Recurrent",
-    desc: "Long Short-Term Memory with 3 gates and cell state",
-    status: "pending",
-    badge: "In Dev",
+    desc: "Long Short-Term Memory with 4 gates and cell state",
+    status: "active",
+    badge: "Active",
   },
   {
     id: "gru",
