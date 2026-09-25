@@ -111,17 +111,19 @@ export default function ModelProfile({ modelId, state, onSelectGru }) {
             </div>
           </>
         ) : (
-          <p className="dev-message muted">
-            This model is currently under development and training. Once ready, live browser inference and evaluation
-            metrics will be available here.
-          </p>
-        )}
+          <>
+            <p className="dev-message muted">
+              This model is currently under development and training. Once ready, live browser inference and evaluation
+              metrics will be available here.
+            </p>
 
-        <div className="dev-action">
-          <button type="button" className="button secondary" onClick={onSelectGru}>
-            Try Live GRU Model →
-          </button>
-        </div>
+            <div className="dev-action">
+              <button type="button" className="button secondary" onClick={onSelectGru}>
+                Try Live GRU Model →
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {/* When in CNN mode, render either live tester or full benchmark metrics */}

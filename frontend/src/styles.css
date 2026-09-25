@@ -1133,7 +1133,7 @@ tbody th {
 
 /* 1D CNN Sub-Tabs & Tester Styles */
 .cnn-sub-tabs {
-  margin: 18px 0 12px;
+  margin: 18px 0 0;
   width: 100%;
   max-width: 500px;
 }
