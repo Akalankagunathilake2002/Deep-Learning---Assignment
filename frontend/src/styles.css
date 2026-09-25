@@ -1131,4 +1131,121 @@ tbody th {
   line-height: 1.4;
 }
 
+/* 1D CNN Sub-Tabs & Tester Styles */
+.cnn-sub-tabs {
+  margin: 18px 0 12px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.cnn-header-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.cnn-header-row h2 {
+  margin-bottom: 4px;
+}
+
+.sample-prompts-row {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.sample-lbl {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-2);
+}
+
+.sample-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.chip-btn {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.chip-btn:hover:not(:disabled) {
+  background: var(--line);
+  border-color: var(--ink-2);
+}
+
+.cnn-quick-benchmark {
+  margin-top: 20px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+
+.cnn-bench-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.cnn-bench-header h3 {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.cnn-bench-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+  font-size: 0.82rem;
+}
+
+.cnn-figures-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.figure-card {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+
+.figure-card h4 {
+  font-size: 0.82rem;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.figure-card img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+}
+
+.cnn-benchmark-detail-card {
+  padding: 28px 24px;
+  margin-top: 16px;
+}
+
+
 

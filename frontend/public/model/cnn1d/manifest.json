@@ -1,0 +1,64 @@
+{
+  "dtype": "float32",
+  "arch": "cnn1d",
+  "filters": 128,
+  "kernel_size": 5,
+  "embed_dim": 64,
+  "hidden": 32,
+  "tensors": {
+    "embedding": {
+      "shape": [
+        5000,
+        64
+      ],
+      "offset": 0,
+      "length": 320000
+    },
+    "conv1d_kernel": {
+      "shape": [
+        5,
+        64,
+        128
+      ],
+      "offset": 320000,
+      "length": 40960
+    },
+    "conv1d_bias": {
+      "shape": [
+        128
+      ],
+      "offset": 360960,
+      "length": 128
+    },
+    "dense1_kernel": {
+      "shape": [
+        128,
+        32
+      ],
+      "offset": 361088,
+      "length": 4096
+    },
+    "dense1_bias": {
+      "shape": [
+        32
+      ],
+      "offset": 365184,
+      "length": 32
+    },
+    "dense2_kernel": {
+      "shape": [
+        32,
+        1
+      ],
+      "offset": 365216,
+      "length": 32
+    },
+    "dense2_bias": {
+      "shape": [
+        1
+      ],
+      "offset": 365248,
+      "length": 1
+    }
+  }
+}
