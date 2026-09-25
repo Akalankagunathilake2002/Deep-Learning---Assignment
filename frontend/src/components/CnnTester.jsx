@@ -1,33 +1,21 @@
 import { useMemo, useRef, useState, useEffect } from "react";
 import examples from "../examples.json";
-import { formatPercent } from "../format.js";
+import { formatPercent, plural } from "../format.js";
 import { analyzeCnn } from "../lib/engine.js";
 import { Cnn1dModel } from "../lib/cnn1d.js";
 import ModelCard from "./ModelCard.jsx";
 import TokenView from "./TokenView.jsx";
 
-const CNN_EXAMPLES = [
-  {
-    id: "pos",
-    name: "Positive (Dataset)",
-    text: "Triple AAA rate of 173 was a steal. 7th floor room complete with 44in plasma TV bose stereo, and gorgeous bathroom. Concierge was very helpful. You cannot beat this location. Food was very good so it was worth the wait. A gem in chicago.",
-  },
-  {
-    id: "neg",
-    name: "Negative (Dataset)",
-    text: "Terrible experience. The room smelled of mildew, carpet was visibly stained, and the air conditioner made loud clanking noises all night. Staff at reception were indifferent and dismissive. Will never stay here again.",
-  },
-  {
-    id: "negation",
-    name: "Negation Challenge",
-    text: "The room was not dirty and the front desk staff was certainly not unhelpful. Not what I feared at all, actually had a wonderful stay.",
-  },
-  {
-    id: "short",
-    name: "Short Phrase",
-    text: "Excellent service and lovely clean rooms!",
-  },
-];
+function Notice({ children }) {
+  return (
+    <p className="notice">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false">
+        <path d="M12 2a10 10 0 100 20 10 10 0 000-20zm1 15h-2v-6h2zm0-8h-2V7h2z" fill="currentColor" />
+      </svg>
+      <span>{children}</span>
+    </p>
+  );
+}
 
 export default function CnnTester({ state, onSelectGru }) {
   const [text, setText] = useState("");
@@ -90,137 +78,124 @@ export default function CnnTester({ state, onSelectGru }) {
 
   return (
     <div className="try-grid">
-      <section className="card input-card" aria-labelledby="cnn-input-title">
-        <div className="cnn-header-row">
-          <div>
-            <h2 id="cnn-input-title">Test 1D CNN Live in Browser</h2>
-            <p className="muted">
-              Type or paste any hotel review to test the <strong>1D CNN Champion Model (Dilmith)</strong> running
-              entirely in your browser with zero latency.
-            </p>
-          </div>
-          <span className="status-badge active">CNN Inference Active</span>
-        </div>
+      <section className="card input-card" aria-labelledby="input-title">
+        <h2 id="input-title">Your review</h2>
+        <p className="muted">Paste or type a hotel review. The models say whether it sounds positive or negative.</p>
 
-        <label htmlFor="cnn-review-input" className="sr-only">
+        <label htmlFor="review" className="sr-only">
           Hotel review
         </label>
         <textarea
-          id="cnn-review-input"
+          id="review"
           ref={textarea}
-          className="textarea"
-          rows={5}
-          placeholder="e.g. We had a wonderful weekend stay. The room was spacious and the concierge gave great restaurant advice..."
+          rows={9}
           value={text}
           onChange={(e) => setText(e.target.value)}
           onKeyDown={(e) => {
-            if ((e.ctrlKey || e.metaKey) && e.key === "Enter") {
-              e.preventDefault();
-              run(text);
-            }
+            if ((e.metaKey || e.ctrlKey) && e.key === "Enter") run(text);
           }}
+          placeholder="For example: We stayed three nights. The room was clean and quiet, the staff were friendly, and breakfast was great…"
           disabled={!ready}
         />
-
-        <div className="input-toolbar">
-          <div className="words-counter" aria-live="polite">
-            {words} {words === 1 ? "word" : "words"}
-          </div>
-
-          <div className="toolbar-buttons">
-            {text && (
-              <button type="button" className="button secondary" onClick={clear}>
-                Clear
-              </button>
-            )}
-            <button
-              type="button"
-              className="button primary"
-              onClick={() => run(text)}
-              disabled={!ready || !text.trim()}
-            >
-              Analyze with 1D CNN
-            </button>
-          </div>
+        <div className="input-meta">
+          <span className="small muted">
+            {plural(words, "word")} · a few sentences (40+ words) work best
+          </span>
         </div>
 
-        <div className="sample-prompts-row">
-          <span className="sample-lbl">Try sample review:</span>
-          <div className="sample-chips">
-            {CNN_EXAMPLES.map((ex) => (
-              <button
-                key={ex.id}
-                type="button"
-                className="chip-btn"
-                onClick={() => pickExample(ex)}
-                disabled={!ready}
-              >
-                {ex.name}
-              </button>
+        <div className="actions">
+          <button type="button" className="button primary" onClick={() => run(text)} disabled={!ready || !text.trim()}>
+            Analyze review
+          </button>
+          <button type="button" className="button" onClick={clear} disabled={!text && !analysis}>
+            Clear
+          </button>
+          <span className="small muted hint-keys">Ctrl/⌘ + Enter</span>
+        </div>
+
+        <div className="examples">
+          <h3>Or try an example</h3>
+          <ul className="chips">
+            {examples.map((ex) => (
+              <li key={ex.id}>
+                <button type="button" className="chip" title={ex.hint} onClick={() => pickExample(ex)} disabled={!ready}>
+                  {ex.label}
+                </button>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       </section>
 
-      {analysis && !analysis.empty && (
-        <>
-          <section className="results-grid" aria-label="1D CNN Analysis Results">
-            {analysis.results.map((res) => (
-              <ModelCard key={res.id} {...res} />
-            ))}
-          </section>
+      <section className="results-col" aria-labelledby="result-title">
+        <h2 id="result-title" className="sr-only">
+          Result
+        </h2>
 
-          {analysis.disagree && (
-            <div className="callout warning">
-              <svg viewBox="0 0 20 20" width="18" height="18" fill="currentColor">
-                <path
-                  fillRule="evenodd"
-                  d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-              <span>
-                <strong>Models Disagree:</strong> 1D CNN and GRU produced contrasting predictions for this input.
-                1D CNN focuses on local 5-gram keyphrase patterns while GRU unrolls recurrent memory across the whole
-                review.
-              </span>
+        {ready && !analysis && (
+          <div className="card placeholder">
+            <strong>Your result will appear here.</strong>
+            <span>Type a review or pick an example, then press Analyze.</span>
+            <span className="small muted">
+              The <b>1D CNN model</b> applies parallel 1D convolutional filters across word vector embeddings to detect localized sentiment keyphrases with zero latency.
+            </span>
+          </div>
+        )}
+
+        {ready && analysis && (
+          <>
+            {analysis.sourceText !== text && (
+              <Notice>You have edited the text since this result. Press Analyze to update it.</Notice>
+            )}
+
+            {analysis.empty && (
+              <Notice>No usable words were found after cleaning. Try a sentence that contains some letters.</Notice>
+            )}
+
+            {!analysis.empty && (
+              <>
+                <section className="results-grid" aria-label="1D CNN Analysis Results">
+                  {analysis.results.map((res) => (
+                    <ModelCard key={res.id} {...res} />
+                  ))}
+                </section>
+
+                <TokenView analysis={analysis} />
+              </>
+            )}
+          </>
+        )}
+
+        <div className="cnn-quick-benchmark card">
+          <div className="cnn-bench-header">
+            <h3>1D CNN Benchmark Snapshot</h3>
+            <span className="status-badge ready">94.38% Test Accuracy</span>
+          </div>
+          <p className="muted small">
+            Trained on the common dataset (<code>dataset/deceptive-opinion.csv</code>) with the fixed 80/10/10 split under SE4050 guidelines. 128 Conv1D filters (kernel 5) with Global Max Pooling.
+          </p>
+          <div className="cnn-bench-metrics">
+            <div>
+              <strong>Accuracy:</strong> 94.38%
             </div>
-          )}
-
-          <TokenView analysis={analysis} />
-        </>
-      )}
-
-      <div className="cnn-quick-benchmark card">
-        <div className="cnn-bench-header">
-          <h3>1D CNN Benchmark Snapshot (Dilmith)</h3>
-          <span className="status-badge ready">94.38% Test Accuracy</span>
-        </div>
-        <p className="muted small">
-          Trained on the shared 80/10/10 split under SE4050 guidelines. 128 Conv1D filters (kernel 5) with Global Max
-          Pooling.
-        </p>
-        <div className="cnn-bench-metrics">
-          <div>
-            <strong>Accuracy:</strong> 94.38% (+6.25% vs GRU)
-          </div>
-          <div>
-            <strong>F1 Score:</strong> 0.9455
-          </div>
-          <div>
-            <strong>Positive Recall:</strong> 97.50% (78/80)
-          </div>
-          <div>
-            <strong>ROC-AUC:</strong> 0.9702
-          </div>
-          <div>
-            <strong>Latency:</strong> ~4 ms in browser
-          </div>
-          <div>
-            <strong>Speed:</strong> 2.2× faster training
+            <div>
+              <strong>F1 Score:</strong> 0.9455
+            </div>
+            <div>
+              <strong>Positive Recall:</strong> 97.50% (78/80)
+            </div>
+            <div>
+              <strong>ROC-AUC:</strong> 0.9702
+            </div>
+            <div>
+              <strong>Latency:</strong> ~4 ms in browser
+            </div>
+            <div>
+              <strong>Training Time:</strong> 5.92 s
+            </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

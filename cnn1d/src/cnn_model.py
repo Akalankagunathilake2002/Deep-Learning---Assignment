@@ -15,17 +15,17 @@ from tensorflow.keras.callbacks import EarlyStopping
 
 
 def build_cnn_model(
-    vocab_size: int = 10000,
-    embedding_dim: int = 128,
+    vocab_size: int = 5000,
+    embedding_dim: int = 64,
     filters: int = 128,
     kernel_size: int = 5,
-    dense_units: int = 64,
+    dense_units: int = 32,
     dropout_rate: float = 0.5,
-    max_length: int = 200,
+    max_length: int = 300,
     learning_rate: float = 0.001
 ) -> tf.keras.Model:
     """
-    Constructs and compiles a custom 1D CNN for binary text classification.
+    Constructs and compiles the 1D CNN model for hotel review sentiment classification.
 
     Architecture Flow:
     Input review sequence (max_length integers)
@@ -46,7 +46,7 @@ def build_cnn_model(
     ---------------------
     - Sigmoid in Output Layer:
       Maps the final scalar logit to a continuous probability in the range [0, 1],
-      representing P(Fake | Review). If P >= 0.5, the review is classified as Fake (1).
+      representing P(Positive | Review). If P >= 0.5, the review is classified as Positive (1).
     - Binary Cross-Entropy Loss:
       The standard and statistically sound loss function for binary Bernoulli targets,
       heavily penalizing confident misclassifications via negative log-likelihood.

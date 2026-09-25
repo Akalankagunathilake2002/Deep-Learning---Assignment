@@ -1,7 +1,7 @@
 # 1D CNN: Individual Contribution
 **Student:** Dilmith  
 **Course:** SE4050 – Deep Learning (2026)  
-**Component:** 1D Convolutional Neural Network (1D CNN) for Sentiment Classification / Review Authenticity
+**Component:** 1D Convolutional Neural Network (1D CNN) for Hotel Review Sentiment Classification
 
 ---
 
@@ -50,7 +50,7 @@ cnn1d/
 
 ## 2. Model Architecture & Rationale
 
-Unlike recurrent neural networks (Simple RNN, LSTM, GRU) that maintain sequential internal states and process text token-by-token, a **1D Convolutional Neural Network (1D CNN)** applies one-dimensional sliding filters across contiguous word vector embeddings.
+Unlike recurrent neural networks that maintain sequential internal states and process text token-by-token, a **1D Convolutional Neural Network (1D CNN)** applies one-dimensional sliding filters across contiguous word vector embeddings.
 
 ```
 Input (300 token ids)
@@ -68,28 +68,33 @@ Total Parameters: 365,249 (100% trainable)
 1. **1D Convolution (`Conv1D`):** Filters of size $k=5$ slide over the sequence to detect localized keyphrases, emotional hyperbole, and promotional idioms characteristic of reviews.
 2. **ReLU Activation:** Applies $f(x) = \max(0, x)$ to introduce non-linearity without suffering from gradient vanishing issues common to sigmoid or hyperbolic tangent activations in deep networks.
 3. **Global Max-Pooling (`GlobalMaxPooling1D`):** Reduces the temporal dimension by extracting the maximum activation per feature map. This guarantees **position invariance**—detecting a strong sentiment cue regardless of whether it appears in the opening sentence, body, or conclusion of the review.
-4. **Computational Efficiency:** Convolutions across time steps can be computed completely in parallel without sequential backpropagation through time (BPTT), making training up to 2× faster than recurrent architectures.
+4. **Computational Efficiency:** Convolutions across time steps are computed completely in parallel without sequential backpropagation through time (BPTT), resulting in rapid training.
 
 ---
 
-## 3. Results Summary (Fair Comparison Benchmark)
+## 3. Results Summary (Seed 42 Benchmark)
 
-Evaluated under the **exact identical experimental protocol** defined in `TEAM_GUIDE.md`:
+Evaluated on the **common dataset** under the standardized experimental protocol defined in `TEAM_GUIDE.md`:
+- Common Dataset: `dataset/deceptive-opinion.csv` (1,600 hotel reviews, 1,596 after deduplication)
+- Label: `polarity` column (positive = 1, negative = 0)
 - Fixed Stratified Split: 1,276 Train, 160 Validation, 160 Test
 - Vocabulary: 5,000 tokens (Training split only)
 - Maximum Sequence Length: 300 (pre-padded)
 - Random Seed: 42
 
-| Metric | 1D CNN (Dilmith) | GRU Reference (Akalanka) | Difference |
-| :--- | :---: | :---: | :---: |
-| **Test Accuracy** | **94.38%** | 88.13% | **+6.25%** |
-| **Precision** | **91.76%** | 91.78% | -0.02% |
-| **Recall** | **97.50%** | 83.75% | **+13.75%** |
-| **F1 Score** | **0.9455** | 0.8758 | **+0.0697** |
-| **ROC-AUC** | **0.9702** | 0.9367 | **+0.0335** |
-| **Training Time** | **6.11 s** | 13.68 s | **2.2× faster** |
-| **Trainable Parameters** | 365,249 | 347,073 | ~5% diff |
-| **Best Epoch** | Epoch 13 | Epoch 5 | — |
+| Metric | 1D CNN Value | Details |
+| :--- | :---: | :--- |
+| **Test Accuracy** | **94.38%** | 95% CI: [90.63%, 97.50%] |
+| **Precision (Positive)** | **91.76%** | 78 / (78 + 7) |
+| **Recall (Positive)** | **97.50%** | 78 of 80 positive reviews detected |
+| **F1 Score** | **0.9455** | Harmonic mean of precision & recall |
+| **ROC-AUC** | **0.9702** | 95% CI: [0.9402, 0.9937] |
+| **Negative Precision** | **97.33%** | 73 / (73 + 2) |
+| **Negative Recall** | **91.25%** | 73 of 80 negative reviews detected |
+| **Negative F1** | **0.9419** | Strong balanced performance across both classes |
+| **Training Time** | **6.11 s** | Fast parallel convolutional convergence |
+| **Trainable Parameters** | 365,249 | 100% trainable |
+| **Best Epoch** | Epoch 13 | Restored via EarlyStopping (patience 5) |
 
 ---
 

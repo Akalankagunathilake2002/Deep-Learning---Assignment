@@ -1,4 +1,4 @@
-# 1D CNN Model: Hotel Review Sentiment & Authenticity Classification
+# 1D CNN Model: Hotel Review Sentiment Classification
 
 **Student:** Dilmith  
 **Course:** SE4050 – Deep Learning  
@@ -10,7 +10,7 @@
 
 ## 1. Role of the 1D CNN in the Group Study
 
-In our comparative evaluation of neural architectures for hotel review sentiment classification (Simple RNN, LSTM, GRU, 1D CNN), the **1D Convolutional Neural Network (1D CNN)** serves as the non-recurrent, spatial/temporal feature extractor. While recurrent architectures (RNN, LSTM, GRU) process sequence elements sequentially and maintain internal hidden memories, a 1D CNN slides one-dimensional discrete filters across contiguous word vector embeddings.
+In our evaluation of neural architectures for hotel review sentiment classification (Simple RNN, LSTM, GRU, 1D CNN), the **1D Convolutional Neural Network (1D CNN)** serves as the non-recurrent, spatial/temporal feature extractor. While recurrent architectures process sequence elements sequentially and maintain internal hidden memories, a 1D CNN slides one-dimensional discrete filters across contiguous word vector embeddings.
 
 This architectural paradigm offers distinct theoretical and practical advantages:
 1. **Parallelized Temporal Convolutions:** Word embeddings across all time steps are processed concurrently through matrix multiplications on tensor hardware, avoiding the sequential bottleneck of backpropagation through time (BPTT).
@@ -21,11 +21,11 @@ This architectural paradigm offers distinct theoretical and practical advantages
 
 ## 2. Experimental Data and Fair Comparison Protocol
 
-To ensure an academically rigorous and strictly controlled comparison, all four models were trained, validated, and evaluated under identical conditions:
+To ensure an academically rigorous and strictly controlled comparison, all models in the group project were trained, validated, and evaluated under identical conditions:
 
 | Parameter | Value | Academic Rationale |
 | :--- | :--- | :--- |
-| **Dataset** | Deceptive Opinion Spam Corpus | 1,600 hotel reviews of 20 Chicago hotels (1,596 after deduplication) |
+| **Dataset** | Deceptive Opinion Spam Corpus | 1,600 hotel reviews of 20 Chicago hotels (1,596 after deduplication) in `dataset/deceptive-opinion.csv` |
 | **Labeling** | `polarity` column | $0 = \text{Negative}$, $1 = \text{Positive}$ (balanced: 640 train pos / 636 train neg) |
 | **Deduplication** | 4 identical review pairs removed | Prevents identical reviews leaking across training, validation, and test sets |
 | **Data Partitioning** | Stratified 80 / 10 / 10 | **1,276 Train, 160 Validation, 160 Test** (fixed by row IDs, seed 42) |
@@ -73,7 +73,7 @@ Input Sequence: (300 token IDs)
 Total Parameters: 365,249 (100% Trainable)
 ```
 
-The embedding represents 87.6% of the total network capacity (320,000 parameters), while the convolutional feature extractor and classification head comprise 45,249 parameters. This matches the capacity of the reference GRU (347,073 total parameters, ~5% delta), isolating architecture as the sole independent variable.
+The embedding represents 87.6% of the total network capacity (320,000 parameters), while the convolutional feature extractor and classification head comprise 45,249 parameters, creating a lean, highly expressive model of 365,249 parameters.
 
 ---
 
@@ -81,19 +81,19 @@ The embedding represents 87.6% of the total network capacity (320,000 parameters
 
 The final champion 1D CNN model was evaluated **exactly once** on the unseen 160-review test set at the default decision threshold $\tau = 0.5$:
 
-| Metric | 1D CNN (Dilmith) | GRU Reference | Comparison / Difference |
-| :--- | :---: | :---: | :---: |
-| **Accuracy** | **94.38%** | 88.13% | **+6.25%** |
-| **Precision (Positive)** | **91.76%** | 91.78% | -0.02% |
-| **Recall (Positive)** | **97.50%** | 83.75% | **+13.75%** |
-| **F1-Score (Positive)** | **0.9455** | 0.8758 | **+0.0697** |
-| **ROC-AUC** | **0.9702** | 0.9367 | **+0.0335** |
-| **Negative Precision** | **97.33%** | 85.06% | **+12.27%** |
-| **Negative Recall** | **91.25%** | 92.50% | -1.25% |
-| **Negative F1** | **0.9419** | 0.8862 | **+0.0557** |
-| **Macro Average F1** | **0.9437** | 0.8810 | **+0.0627** |
-| **Training Duration** | **6.11 s** | 13.68 s | **2.2× faster convergence** |
-| **Epochs to Best Val Loss** | 13 (stopped at 18) | 5 (stopped at 10) | Stable feature learning |
+| Metric | 1D CNN Result | Description / Notes |
+| :--- | :---: | :--- |
+| **Accuracy** | **94.38%** | 151 / 160 correct test predictions (95% CI: [90.63%, 97.50%]) |
+| **Precision (Positive)** | **91.76%** | Low false positive rate (FP=7, TP=78) |
+| **Recall (Positive)** | **97.50%** | Missed only 2 positive reviews (FN=2, TP=78) |
+| **F1-Score (Positive)** | **0.9455** | Strong harmonic balance between precision and recall |
+| **ROC-AUC** | **0.9702** | Near-optimal probabilistic discrimination (95% CI: [0.9402, 0.9937]) |
+| **Negative Precision** | **97.33%** | 73 / (73 + 2) |
+| **Negative Recall** | **91.25%** | 73 / (73 + 7) |
+| **Negative F1** | **0.9419** | Consistent, balanced detection of negative reviews |
+| **Macro Average F1** | **0.9437** | Symmetric performance across both sentiment classes |
+| **Training Duration** | **6.11 s** | Fast parallel convolutional convergence |
+| **Epochs to Best Val Loss** | 13 (stopped at 18) | Restored via EarlyStopping |
 
 ### Confusion Matrix Breakdown (Test Set, N=160)
 - **True Negatives (TN):** 73 (correctly classified negative hotel reviews)
@@ -130,6 +130,6 @@ The narrow spread ($\pm 1.45\%$ in test accuracy, $\pm 0.0053$ in ROC-AUC) confi
 
 ## 6. Discussion and Architectural Takeaways
 
-1. **Why 1D CNN Outperformed GRU:** Hotel reviews predominantly express sentiment through localized phrases (e.g., *"unfriendly front desk"*, *"view of the river was magnificent"*) rather than complex, long-range sentence dependencies spanning hundreds of tokens. The 1D CNN with kernel size 5 directly targets these 5-gram windows.
-2. **Speed & Efficiency:** By eliminating recurrent step-by-step dependency loops, the 1D CNN trained in 6.11 seconds (2.2× faster than the GRU), proving ideal for deployment in latency-critical environments.
+1. **Efficacy for Review Sentiment:** Hotel reviews predominantly express sentiment through localized phrases (e.g., *"unfriendly front desk"*, *"view of the river was magnificent"*) rather than complex, long-range sentence dependencies spanning hundreds of tokens. The 1D CNN with kernel size 5 directly targets these 5-gram windows, achieving 94.38% test accuracy and 0.9702 ROC-AUC.
+2. **Speed & Efficiency:** By eliminating recurrent step-by-step dependency loops, the 1D CNN trained in just 6.11 seconds, proving ideal for rapid iteration and deployment in latency-critical environments.
 3. **Position Invariance Advantage:** Global max-pooling successfully aggregated features regardless of whether the reviewer summarized their sentiment in the opening lines or the concluding paragraph.

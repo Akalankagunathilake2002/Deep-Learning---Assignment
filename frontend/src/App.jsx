@@ -176,12 +176,16 @@ export default function App({ load }) {
               </footer>
             </>
           ) : (
-            <main>
+            <>
               <ModelProfile modelId={activeModel} state={state} onSelectGru={() => setActiveModel("gru")} />
               <footer className="footer small muted">
-                SE4050 Deep Learning 2026 · Group Benchmark Project based on TEAM_GUIDE.md
+                {activeModel === "cnn1d"
+                  ? "SE4050 Deep Learning 2026 · 1D CNN individual contribution. The model runs entirely in your browser: nothing you type is sent anywhere."
+                  : activeModel === "rnn"
+                  ? "SE4050 Deep Learning 2026 · Simple RNN individual contribution. The model runs entirely in your browser: nothing you type is sent anywhere."
+                  : "SE4050 Deep Learning 2026 · Individual contribution. The model runs entirely in your browser: nothing you type is sent anywhere."}
               </footer>
-            </main>
+            </>
           )}
         </div>
       </div>

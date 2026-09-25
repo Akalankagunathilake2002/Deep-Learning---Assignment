@@ -1,5 +1,6 @@
 import { useState } from "react";
 import CnnTester from "./CnnTester.jsx";
+import CnnResultsTab from "./CnnResultsTab.jsx";
 
 const MODEL_INFO = {
   rnn: {
@@ -88,28 +89,27 @@ export default function ModelProfile({ modelId, state, onSelectGru }) {
   return (
     <div className="cnn-profile-wrapper">
       <header className="header">
-        <span className="logo cnn-logo" aria-hidden="true">
-          <svg viewBox="0 0 32 32" width="40" height="40" fill="none">
-            <rect width="32" height="32" rx="8" fill="rgba(42, 120, 214, 0.12)" stroke="var(--pos)" strokeWidth="1.6" />
+        <span className="logo" aria-hidden="true">
+          <svg viewBox="0 0 32 32" width="40" height="40">
+            <rect width="32" height="32" rx="8" fill="currentColor" />
             <path
-              d="M7 16h3l2.5-6 4 12 3.5-8 2 4h3"
-              stroke="var(--pos)"
-              strokeWidth="2.2"
+              d="M8 21l5-6 4 4 7-9"
+              fill="none"
+              stroke="#fff"
+              strokeWidth="2.6"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
+            <circle cx="24" cy="10" r="2" fill="#eb6834" />
           </svg>
         </span>
         <div>
           <div className="header-badge-row">
-            <h1>1D CNN</h1>
-            <span className="status-badge active">Benchmark Champion</span>
-            <span className="dev-arch-tag">
-              <code>Conv1D(64, kernel_size=3)</code>
-            </span>
+            <h1>Hotel review sentiment</h1>
+            <span className="status-badge active">1D CNN Model</span>
           </div>
           <p className="muted">
-            Temporal 1D convolutional feature extractor with global max-pooling · Implemented by Dilmith (SE4050)
+            A 1D CNN deep-learning model that reads a review and predicts positive or negative
           </p>
         </div>
       </header>
@@ -126,7 +126,7 @@ export default function ModelProfile({ modelId, state, onSelectGru }) {
           className="tab"
           onClick={() => setActiveTab("try")}
         >
-          Try 1D CNN Live (In-Browser)
+          Try it
         </button>
         <button
           type="button"
@@ -138,7 +138,7 @@ export default function ModelProfile({ modelId, state, onSelectGru }) {
           className="tab"
           onClick={() => setActiveTab("benchmark")}
         >
-          Benchmark & Evaluation Report
+          Results & about
         </button>
       </div>
 
@@ -154,73 +154,7 @@ export default function ModelProfile({ modelId, state, onSelectGru }) {
           aria-labelledby="tab-cnn-benchmark"
           hidden={activeTab !== "benchmark"}
         >
-          <div className="card cnn-benchmark-detail-card">
-            <h2>1D CNN Empirical Benchmark (Dilmith)</h2>
-            <p className="muted">
-              Evaluated under the standardized SE4050 protocol: 1,596 reviews, fixed 80/10/10 split, seed 42.
-            </p>
-
-            <div className="cnn-metrics-grid">
-              <div className="cnn-metric-box highlight">
-                <span className="cnn-metric-val">{info.metrics.accuracy}</span>
-                <span className="cnn-metric-lbl">Test Accuracy</span>
-                <span className="cnn-metric-cmp">+6.25% vs GRU</span>
-              </div>
-              <div className="cnn-metric-box highlight">
-                <span className="cnn-metric-val">{info.metrics.f1}</span>
-                <span className="cnn-metric-lbl">Positive F1</span>
-                <span className="cnn-metric-cmp">+0.0697 vs GRU</span>
-              </div>
-              <div className="cnn-metric-box">
-                <span className="cnn-metric-val">{info.metrics.recall}</span>
-                <span className="cnn-metric-lbl">Positive Recall</span>
-                <span className="cnn-metric-sub">78 of 80 detected</span>
-              </div>
-              <div className="cnn-metric-box">
-                <span className="cnn-metric-val">{info.metrics.rocAuc}</span>
-                <span className="cnn-metric-lbl">ROC-AUC</span>
-                <span className="cnn-metric-sub">0.940 - 0.994 (95% CI)</span>
-              </div>
-              <div className="cnn-metric-box">
-                <span className="cnn-metric-val">{info.metrics.trainingTime}</span>
-                <span className="cnn-metric-lbl">Training Speed</span>
-                <span className="cnn-metric-cmp">2.2× faster than GRU</span>
-              </div>
-              <div className="cnn-metric-box">
-                <span className="cnn-metric-val">{info.metrics.params}</span>
-                <span className="cnn-metric-lbl">Parameters</span>
-                <span className="cnn-metric-sub">100% Trainable</span>
-              </div>
-            </div>
-
-            <div className="cnn-cm-summary">
-              <strong>Holdout Test Confusion Matrix (N=160):</strong> TN={info.metrics.confusion.tn} | FP={info.metrics.confusion.fp} | FN={info.metrics.confusion.fn} | TP={info.metrics.confusion.tp}
-            </div>
-
-            <div className="cnn-architecture-banner">
-              <span className="cnn-arch-title">Champion Architecture Pipeline:</span>
-              <code>{info.fullArch}</code>
-            </div>
-
-            <div className="cnn-figures-row">
-              <div className="figure-card">
-                <h4>Training & Validation Accuracy</h4>
-                <img src="./figures/cnn1d_accuracy_curve.png" alt="1D CNN Accuracy Curve" />
-              </div>
-              <div className="figure-card">
-                <h4>Training & Validation Loss</h4>
-                <img src="./figures/cnn1d_loss_curve.png" alt="1D CNN Loss Curve" />
-              </div>
-              <div className="figure-card">
-                <h4>Confusion Matrix (Test Set)</h4>
-                <img src="./figures/cnn1d_confusion_matrix.png" alt="1D CNN Confusion Matrix" />
-              </div>
-              <div className="figure-card">
-                <h4>ROC Curve (AUC = 0.970)</h4>
-                <img src="./figures/cnn1d_roc_curve.png" alt="1D CNN ROC Curve" />
-              </div>
-            </div>
-          </div>
+          <CnnResultsTab state={state} />
         </div>
       </main>
     </div>

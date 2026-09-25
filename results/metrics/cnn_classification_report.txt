@@ -1,0 +1,15 @@
+============================================================
+1D CNN CLASSIFICATION REPORT (SE4050)
+Student: Dilmith
+Target Classes: 0 = Genuine, 1 = Fake
+============================================================
+
+              precision    recall  f1-score   support
+
+ Genuine (0)     0.9726    0.8875    0.9281        80
+    Fake (1)     0.8966    0.9750    0.9341        80
+
+    accuracy                         0.9313       160
+   macro avg     0.9346    0.9312    0.9311       160
+weighted avg     0.9346    0.9313    0.9311       160
+

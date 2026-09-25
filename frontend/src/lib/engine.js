@@ -79,9 +79,9 @@ export function analyze(text, engine) {
   };
 }
 
-/** Run inference on 1D CNN and compare with GRU reference */
+/** Run inference on 1D CNN */
 export function analyzeCnn(text, engine, cnnModelInstance = null) {
-  const { config, vocab, models } = engine;
+  const { config, vocab } = engine;
   const prep = prepareInput(text, vocab, config);
   const empty = prep.nWords === 0;
   if (empty) {
@@ -97,26 +97,10 @@ export function analyzeCnn(text, engine, cnnModelInstance = null) {
     const ms = Math.max(0.1, performance.now() - t0);
     results.push({
       id: "cnn1d",
-      name: "1D CNN (Dilmith)",
+      name: "1D CNN",
       p: pCnn,
       label: pCnn >= config.threshold ? "Positive" : "Negative",
       badge: "Champion",
-      latencyMs: ms,
-    });
-  }
-
-  // Also query Main GRU for direct comparison
-  const mainGru = models?.find((m) => m.id === "main");
-  if (mainGru) {
-    const t0 = performance.now();
-    const pGru = mainGru.model.predict(prep.input);
-    const ms = Math.max(0.1, performance.now() - t0);
-    results.push({
-      id: "main",
-      name: "GRU Reference",
-      p: pGru,
-      label: pGru >= config.threshold ? "Positive" : "Negative",
-      badge: "Reference",
       latencyMs: ms,
     });
   }
@@ -125,7 +109,7 @@ export function analyzeCnn(text, engine, cnnModelInstance = null) {
     ...prep,
     empty: false,
     short: !empty && prep.nWords < config.minTrainWords,
-    disagree: results.length > 1 && results.some((r) => r.label !== results[0].label),
+    disagree: false,
     results,
   };
 }

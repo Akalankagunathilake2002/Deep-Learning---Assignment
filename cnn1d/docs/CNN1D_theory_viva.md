@@ -19,13 +19,13 @@ In computer vision, a 2D CNN slides a 2D filter across spatial height and width.
 
 ---
 
-## 2. Why use 1D CNN instead of an RNN, LSTM, or GRU?
+## 2. Why use 1D CNN instead of Recurrent Neural Networks (RNN / LSTM)?
 
-| Dimension | 1D CNN | Recurrent Neural Networks (RNN, LSTM, GRU) |
+| Dimension | 1D CNN | Recurrent Neural Networks (RNN, LSTM) |
 | :--- | :--- | :--- |
 | **Computation Model** | Parallel feedforward convolution across time steps | Sequential step-by-step state propagation |
 | **Hardware Utilization** | Extremely high GPU/TPU/CPU vectorization | Sequential bottleneck prevents full tensor parallelism |
-| **Training Speed** | Fast (~6 s in our benchmark) | Slower (~14 s for GRU, longer for LSTM) |
+| **Training Speed** | Fast (~6 s in our benchmark) | Slower (sequential unrolling overhead) |
 | **Feature Extraction** | Detects local n-gram patterns (e.g., 3-grams, 5-grams) | Models arbitrary-length sequential dependencies |
 | **Gradient Flow** | Direct backpropagation through depth (no BPTT) | Susceptible to vanishing/exploding gradients over time |
 | **Inductive Bias** | Translation / position invariance via pooling | Order preservation and temporal recency bias |
@@ -65,8 +65,8 @@ $$\hat{c}_j = \max_{1 \le i \le 296} c_{i, j}, \quad j = 1, \dots, 128$$
 
 ## 6. Likely Viva Questions & Model Answers
 
-### Q1: "Why does the 1D CNN have higher accuracy than the GRU in your results?"
-**Answer:** *"In hotel reviews, sentiment is predominantly sparse and localized rather than distributed over complex long-range temporal syntax. The 1D CNN's 128 filters of size 5 acted as efficient parallel matched filters for key evaluative 5-grams. Combined with global max-pooling, the model extracted peak sentiment signals with minimal noise, reaching 94.38% test accuracy compared to 88.13% for the GRU."*
+### Q1: "Why is 1D CNN so effective for hotel review sentiment classification?"
+**Answer:** *"In hotel reviews, sentiment is predominantly sparse and localized (e.g., 'spotless bathroom', 'terrible noisy air conditioner') rather than distributed over complex long-range temporal syntax. The 1D CNN's 128 filters of size 5 act as efficient parallel matched filters for key evaluative 5-grams. Combined with global max-pooling, the model extracts peak sentiment signals across the review with minimal noise, achieving 94.38% test accuracy and 0.9702 ROC-AUC."*
 
 ### Q2: "Can 1D CNN use `mask_zero=True` in the Embedding layer?"
 **Answer:** *"No. In Keras, 1D convolution layers do not support boolean masking because sliding convolutional kernels across masked and unmasked elements would create undefined boundary conditions. Therefore, to ensure a strictly fair comparison, masking was disabled across all models in our group study."*

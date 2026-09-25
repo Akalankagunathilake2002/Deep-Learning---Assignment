@@ -157,8 +157,7 @@ describe("Sidebar and Model Selection", () => {
     expect(await screen.findByText("LSTM Model")).toBeInTheDocument();
 
     fireEvent.click(screen.getByRole("button", { name: /1D CNN/ }));
-    expect(await screen.findByRole("heading", { name: "1D CNN" })).toBeInTheDocument();
-    expect(screen.getByText("Conv1D(64, kernel_size=3)")).toBeInTheDocument();
+    expect(await screen.findByText("1D CNN Model")).toBeInTheDocument();
   });
 
   it("returns to GRU and restores the live sentiment analyzer", async () => {

@@ -24,23 +24,23 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 def load_and_inspect_dataset(
     filepath: str,
     text_col: str = "text",
-    label_col: str = "label"
+    label_col: str = "polarity"
 ) -> pd.DataFrame:
     """
     Loads dataset from CSV and verifies essential columns.
 
     Parameters:
-        filepath (str): Path to CSV file.
+        filepath (str): Path to CSV file (dataset/deceptive-opinion.csv).
         text_col (str): Name of text column.
-        label_col (str): Name of binary label column (0=Genuine, 1=Fake).
+        label_col (str): Name of binary label column (0=Negative, 1=Positive).
 
     Returns:
         pd.DataFrame: Loaded dataset.
     """
     if not os.path.exists(filepath):
         raise FileNotFoundError(
-            f"Dataset not found at '{filepath}'. Please place your dataset CSV there "
-            f"or update DATASET_PATH."
+            f"Dataset not found at '{filepath}'. Please ensure deceptive-opinion.csv "
+            f"exists in the dataset/ directory or update DATASET_PATH."
         )
 
     df = pd.read_csv(filepath)
@@ -48,9 +48,9 @@ def load_and_inspect_dataset(
     if text_col not in df.columns:
         raise ValueError(f"Column '{text_col}' not found in dataset columns: {list(df.columns)}")
 
-    # If label_col not found, check for standard fake review label column names
+    # If label_col not found, check for standard candidate columns
     if label_col not in df.columns:
-        for candidate in ["label", "deceptive", "is_fake", "fake", "target"]:
+        for candidate in ["polarity", "label", "sentiment", "target", "deceptive"]:
             if candidate in df.columns:
                 print(f"[INFO] Specified label column '{label_col}' not found. Using detected column '{candidate}'.")
                 label_col = candidate
@@ -58,12 +58,12 @@ def load_and_inspect_dataset(
         else:
             raise ValueError(f"Column '{label_col}' not found in dataset columns: {list(df.columns)}")
 
-    # Standardize string labels to binary 0 (Genuine/Truthful) and 1 (Fake/Deceptive)
+    # Standardize string labels to binary: 0 (Negative) and 1 (Positive)
     unique_vals = set(df[label_col].dropna().unique())
     if not unique_vals.issubset({0, 1}):
         mapping = {
-            "truthful": 0, "genuine": 0, "real": 0, "0": 0,
-            "deceptive": 1, "fake": 1, "1": 1
+            "negative": 0, "neg": 0, "0": 0, "truthful": 0, "genuine": 0,
+            "positive": 1, "pos": 1, "1": 1, "deceptive": 1, "fake": 1
         }
         # Check lowercase representation
         str_mapping = {}
@@ -101,8 +101,8 @@ def get_dataset_inspection_dict(
     missing_label = int(df[label_col].isna().sum())
     duplicate_reviews = int(df.duplicated(subset=[text_col]).sum())
     class_counts = df[label_col].value_counts().to_dict()
-    genuine_count = int(class_counts.get(0, 0))
-    fake_count = int(class_counts.get(1, 0))
+    neg_count = int(class_counts.get(0, 0))
+    pos_count = int(class_counts.get(1, 0))
 
     return {
         "total_records": total_records,
@@ -111,10 +111,14 @@ def get_dataset_inspection_dict(
         "missing_text": missing_text,
         "missing_label": missing_label,
         "duplicate_reviews": duplicate_reviews,
-        "genuine_count": genuine_count,
-        "fake_count": fake_count,
-        "genuine_percentage": (genuine_count / total_records * 100) if total_records > 0 else 0.0,
-        "fake_percentage": (fake_count / total_records * 100) if total_records > 0 else 0.0,
+        "neg_count": neg_count,
+        "pos_count": pos_count,
+        "neg_percentage": (neg_count / total_records * 100) if total_records > 0 else 0.0,
+        "pos_percentage": (pos_count / total_records * 100) if total_records > 0 else 0.0,
+        "genuine_count": neg_count,
+        "fake_count": pos_count,
+        "genuine_percentage": (neg_count / total_records * 100) if total_records > 0 else 0.0,
+        "fake_percentage": (pos_count / total_records * 100) if total_records > 0 else 0.0,
     }
 
 

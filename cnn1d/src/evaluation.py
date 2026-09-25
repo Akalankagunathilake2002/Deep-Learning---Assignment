@@ -277,10 +277,10 @@ def save_final_metrics_csv(
         "Training Time (s)": round(float(metrics_dict.get("training_time_sec", 0.0)), 2),
         "Parameter Count": int(metrics_dict.get("param_count", 0)),
         "Best Epoch": int(metrics_dict.get("best_epoch", 0)),
-        "Embedding Dimension": int(metrics_dict.get("embedding_dim", 128)),
+        "Embedding Dimension": int(metrics_dict.get("embedding_dim", 64)),
         "Filters": int(metrics_dict.get("filters", 128)),
         "Kernel Size": int(metrics_dict.get("kernel_size", 5)),
-        "Dense Units": int(metrics_dict.get("dense_units", 64)),
+        "Dense Units": int(metrics_dict.get("dense_units", 32)),
         "Dropout": float(metrics_dict.get("dropout", 0.5)),
         "Batch Size": int(metrics_dict.get("batch_size", 32)),
     }
