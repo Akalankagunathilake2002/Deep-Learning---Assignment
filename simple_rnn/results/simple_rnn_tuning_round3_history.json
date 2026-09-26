@@ -1,0 +1,901 @@
+{
+  "summary": [
+    {
+      "experiment_id": "R3-1",
+      "description": "R3-1: Baseline + L2 Reg (1e-4)",
+      "max_len": 300,
+      "param_count": 330369,
+      "epochs_run": 12,
+      "best_epoch": 7,
+      "train_loss": 0.547021,
+      "train_accuracy": 0.7884,
+      "val_loss": 0.644194,
+      "val_accuracy": 0.6062,
+      "val_precision": 0.5977,
+      "val_recall": 0.65,
+      "val_f1": 0.622754,
+      "tn": 45,
+      "fp": 35,
+      "fn": 28,
+      "tp": 52,
+      "generalization_gap": 0.1822,
+      "training_time_sec": 39.29
+    },
+    {
+      "experiment_id": "R3-2",
+      "description": "R3-2: Bidirectional Simple RNN (32 units)",
+      "max_len": 300,
+      "param_count": 328321,
+      "epochs_run": 11,
+      "best_epoch": 6,
+      "train_loss": 0.089528,
+      "train_accuracy": 0.971,
+      "val_loss": 0.230208,
+      "val_accuracy": 0.9187,
+      "val_precision": 0.9718,
+      "val_recall": 0.8625,
+      "val_f1": 0.913907,
+      "tn": 78,
+      "fp": 2,
+      "fn": 11,
+      "tp": 69,
+      "generalization_gap": 0.0523,
+      "training_time_sec": 48.28
+    },
+    {
+      "experiment_id": "R3-3",
+      "description": "R3-3: Sequence-Averaged Simple RNN (GlobalAvgPool1D)",
+      "max_len": 300,
+      "param_count": 330369,
+      "epochs_run": 18,
+      "best_epoch": 13,
+      "train_loss": 0.025691,
+      "train_accuracy": 0.9961,
+      "val_loss": 0.137641,
+      "val_accuracy": 0.9437,
+      "val_precision": 0.9494,
+      "val_recall": 0.9375,
+      "val_f1": 0.943396,
+      "tn": 76,
+      "fp": 4,
+      "fn": 5,
+      "tp": 75,
+      "generalization_gap": 0.0523,
+      "training_time_sec": 47.95
+    },
+    {
+      "experiment_id": "R3-4",
+      "description": "R3-4: Baseline Architecture with MAX_LEN=200",
+      "max_len": 200,
+      "param_count": 330369,
+      "epochs_run": 12,
+      "best_epoch": 7,
+      "train_loss": 0.061738,
+      "train_accuracy": 0.9835,
+      "val_loss": 0.323033,
+      "val_accuracy": 0.8875,
+      "val_precision": 0.878,
+      "val_recall": 0.9,
+      "val_f1": 0.888889,
+      "tn": 70,
+      "fp": 10,
+      "fn": 8,
+      "tp": 72,
+      "generalization_gap": 0.096,
+      "training_time_sec": 22.58
+    },
+    {
+      "experiment_id": "R3-5",
+      "description": "R3-5: Bidirectional Simple RNN + L2 Reg (1e-4)",
+      "max_len": 300,
+      "param_count": 328321,
+      "epochs_run": 14,
+      "best_epoch": 9,
+      "train_loss": 0.092949,
+      "train_accuracy": 0.9757,
+      "val_loss": 0.181349,
+      "val_accuracy": 0.9375,
+      "val_precision": 0.9605,
+      "val_recall": 0.9125,
+      "val_f1": 0.935897,
+      "tn": 77,
+      "fp": 3,
+      "fn": 7,
+      "tp": 73,
+      "generalization_gap": 0.0382,
+      "training_time_sec": 62.21
+    }
+  ],
+  "histories": {
+    "R3-1": {
+      "loss": [
+        0.7142608165740967,
+        0.7021405696868896,
+        0.6973323225975037,
+        0.6948948502540588,
+        0.6718275547027588,
+        0.6232158541679382,
+        0.5470211505889893,
+        0.39547479152679443,
+        0.22669318318367004,
+        0.13041450083255768,
+        0.08300303667783737,
+        0.0582505464553833
+      ],
+      "accuracy": [
+        0.48510971665382385,
+        0.5666144490242004,
+        0.5517241358757019,
+        0.5869905948638916,
+        0.602664589881897,
+        0.7194357514381409,
+        0.7884012460708618,
+        0.8785266280174255,
+        0.9435736536979675,
+        0.9710031151771545,
+        0.9851097464561462,
+        0.9905956387519836
+      ],
+      "val_loss": [
+        0.7086445689201355,
+        0.7089513540267944,
+        0.7077983021736145,
+        0.7293292880058289,
+        0.7161902189254761,
+        0.6832736730575562,
+        0.6622076034545898,
+        0.684918999671936,
+        0.8022019267082214,
+        0.8727108240127563,
+        1.0498864650726318,
+        1.0705899000167847
+      ],
+      "val_accuracy": [
+        0.5249999761581421,
+        0.4937500059604645,
+        0.574999988079071,
+        0.48124998807907104,
+        0.518750011920929,
+        0.574999988079071,
+        0.606249988079071,
+        0.6000000238418579,
+        0.6499999761581421,
+        0.6499999761581421,
+        0.625,
+        0.606249988079071
+      ]
+    },
+    "R3-2": {
+      "loss": [
+        0.6989508867263794,
+        0.5805237889289856,
+        0.424635648727417,
+        0.23509334027767181,
+        0.13731737434864044,
+        0.08952776342630386,
+        0.04685616120696068,
+        0.04092976078391075,
+        0.03459835797548294,
+        0.019267773255705833,
+        0.01418270356953144
+      ],
+      "accuracy": [
+        0.5148902535438538,
+        0.7445141077041626,
+        0.8275862336158752,
+        0.9192789793014526,
+        0.9467084407806396,
+        0.9710031151771545,
+        0.9858934283256531,
+        0.9890282154083252,
+        0.9929466843605042,
+        0.9952977895736694,
+        0.9976488947868347
+      ],
+      "val_loss": [
+        0.643722653388977,
+        0.454000324010849,
+        0.31796008348464966,
+        0.2675168514251709,
+        0.24172048270702362,
+        0.23020783066749573,
+        0.24529393017292023,
+        0.26247209310531616,
+        0.30727970600128174,
+        0.29196250438690186,
+        0.3760661482810974
+      ],
+      "val_accuracy": [
+        0.668749988079071,
+        0.8125,
+        0.8687499761581421,
+        0.893750011920929,
+        0.90625,
+        0.918749988079071,
+        0.9437500238418579,
+        0.925000011920929,
+        0.8999999761581421,
+        0.8999999761581421,
+        0.887499988079071
+      ]
+    },
+    "R3-3": {
+      "loss": [
+        0.6737589836120605,
+        0.6273475289344788,
+        0.49662813544273376,
+        0.32138848304748535,
+        0.2377072274684906,
+        0.15019886195659637,
+        0.08284743875265121,
+        0.07814021408557892,
+        0.05187464505434036,
+        0.19051331281661987,
+        0.21660874783992767,
+        0.03877512365579605,
+        0.02569117210805416,
+        0.04749155044555664,
+        0.03390679135918617,
+        0.017192380502820015,
+        0.010335680097341537,
+        0.009779167361557484
+      ],
+      "accuracy": [
+        0.565047025680542,
+        0.6543887257575989,
+        0.7586206793785095,
+        0.8894984126091003,
+        0.92476487159729,
+        0.9506269693374634,
+        0.9788401126861572,
+        0.972570538520813,
+        0.9843260049819946,
+        0.9373040795326233,
+        0.9333855509757996,
+        0.9882445335388184,
+        0.996081531047821,
+        0.989811897277832,
+        0.9937304258346558,
+        0.996081531047821,
+        0.9992163181304932,
+        0.9984325766563416
+      ],
+      "val_loss": [
+        0.6362673044204712,
+        0.5886194705963135,
+        0.3958760201931,
+        0.29166486859321594,
+        0.26881295442581177,
+        0.22760319709777832,
+        0.2231772392988205,
+        0.1639672964811325,
+        0.18880657851696014,
+        0.38656023144721985,
+        0.1940363198518753,
+        0.1775408685207367,
+        0.13764098286628723,
+        0.1436438262462616,
+        0.18054261803627014,
+        0.17637376487255096,
+        0.2314138412475586,
+        0.2785085141658783
+      ],
+      "val_accuracy": [
+        0.6625000238418579,
+        0.737500011920929,
+        0.8187500238418579,
+        0.887499988079071,
+        0.8812500238418579,
+        0.918749988079071,
+        0.925000011920929,
+        0.9312499761581421,
+        0.918749988079071,
+        0.8187500238418579,
+        0.925000011920929,
+        0.9375,
+        0.9437500238418579,
+        0.949999988079071,
+        0.949999988079071,
+        0.925000011920929,
+        0.9375,
+        0.9312499761581421
+      ]
+    },
+    "R3-4": {
+      "loss": [
+        0.6785920262336731,
+        0.6611699461936951,
+        0.6524041891098022,
+        0.4570145606994629,
+        0.27077409625053406,
+        0.13491007685661316,
+        0.06173759326338768,
+        0.03955259546637535,
+        0.02989877574145794,
+        0.035259269177913666,
+        0.02222583070397377,
+        0.019410613924264908
+      ],
+      "accuracy": [
+        0.5705329179763794,
+        0.6253918409347534,
+        0.619905948638916,
+        0.8236677050590515,
+        0.9012539386749268,
+        0.962382435798645,
+        0.9835423231124878,
+        0.9921630024909973,
+        0.9913793206214905,
+        0.9882445335388184,
+        0.9952977895736694,
+        0.9976488947868347
+      ],
+      "val_loss": [
+        0.6509758234024048,
+        0.6710953712463379,
+        0.5948039889335632,
+        0.3735446035861969,
+        0.37165921926498413,
+        0.32435721158981323,
+        0.32303348183631897,
+        0.3399266302585602,
+        0.47135820984840393,
+        0.4016430974006653,
+        0.3909249007701874,
+        0.4504188001155853
+      ],
+      "val_accuracy": [
+        0.6187499761581421,
+        0.643750011920929,
+        0.7124999761581421,
+        0.8500000238418579,
+        0.862500011920929,
+        0.875,
+        0.887499988079071,
+        0.875,
+        0.8687499761581421,
+        0.875,
+        0.893750011920929,
+        0.8500000238418579
+      ]
+    },
+    "R3-5": {
+      "loss": [
+        0.7212688326835632,
+        0.6337187886238098,
+        0.4172873795032501,
+        0.22180365025997162,
+        0.16589856147766113,
+        0.12514322996139526,
+        0.11158379167318344,
+        0.14110668003559113,
+        0.09294930100440979,
+        0.06358323991298676,
+        0.04969001188874245,
+        0.054026637226343155,
+        0.030611496418714523,
+        0.04531935974955559
+      ],
+      "accuracy": [
+        0.49843260645866394,
+        0.6708464026451111,
+        0.8432601690292358,
+        0.9333855509757996,
+        0.955329179763794,
+        0.9647335410118103,
+        0.9772727489471436,
+        0.955329179763794,
+        0.9757053256034851,
+        0.9905956387519836,
+        0.989811897277832,
+        0.9913793206214905,
+        0.9984325766563416,
+        0.9952977895736694
+      ],
+      "val_loss": [
+        0.6671555042266846,
+        0.5498696565628052,
+        0.2820591926574707,
+        0.3147079050540924,
+        0.3569316267967224,
+        0.2786642611026764,
+        0.3274959921836853,
+        0.3635135293006897,
+        0.2010948210954666,
+        0.3594559133052826,
+        0.24759311974048615,
+        0.32350629568099976,
+        0.4003625810146332,
+        0.27837881445884705
+      ],
+      "val_accuracy": [
+        0.668749988079071,
+        0.7250000238418579,
+        0.893750011920929,
+        0.893750011920929,
+        0.893750011920929,
+        0.9125000238418579,
+        0.8999999761581421,
+        0.875,
+        0.9375,
+        0.90625,
+        0.9312499761581421,
+        0.9125000238418579,
+        0.875,
+        0.893750011920929
+      ]
+    }
+  },
+  "case_tracking": {
+    "R3-1": {
+      "summary": {
+        "tn": 45,
+        "fp": 35,
+        "fn": 28,
+        "tp": 52
+      },
+      "tracked_cases": {
+        "813": {
+          "desc": "FP (Bartender complaint)",
+          "label": 0,
+          "prob": 0.4694,
+          "pred": 0,
+          "correct": true
+        },
+        "1098": {
+          "desc": "FP (Recency bias positive end)",
+          "label": 0,
+          "prob": 0.685,
+          "pred": 1,
+          "correct": false
+        },
+        "1170": {
+          "desc": "FP (Preamble positive words)",
+          "label": 0,
+          "prob": 0.5535,
+          "pred": 1,
+          "correct": false
+        },
+        "1367": {
+          "desc": "FP (Long sarcastic review)",
+          "label": 0,
+          "prob": 0.7556,
+          "pred": 1,
+          "correct": false
+        },
+        "1378": {
+          "desc": "FP (Subjunctive clause)",
+          "label": 0,
+          "prob": 0.4373,
+          "pred": 0,
+          "correct": true
+        },
+        "46": {
+          "desc": "FN (Negation 'No complaints')",
+          "label": 1,
+          "prob": 0.8287,
+          "pred": 1,
+          "correct": true
+        },
+        "66": {
+          "desc": "FN (Long truncated review)",
+          "label": 1,
+          "prob": 0.6938,
+          "pred": 1,
+          "correct": true
+        },
+        "248": {
+          "desc": "FN (Negation 'cannot describe')",
+          "label": 1,
+          "prob": 0.2743,
+          "pred": 0,
+          "correct": false
+        },
+        "252": {
+          "desc": "FN (Borderline Wicked tickets)",
+          "label": 1,
+          "prob": 0.6628,
+          "pred": 1,
+          "correct": true
+        },
+        "345": {
+          "desc": "FN (Mixed defense of hotel)",
+          "label": 1,
+          "prob": 0.4096,
+          "pred": 0,
+          "correct": false
+        },
+        "402": {
+          "desc": "FN (Recency bias 'regret' end)",
+          "label": 1,
+          "prob": 0.4173,
+          "pred": 0,
+          "correct": false
+        },
+        "533": {
+          "desc": "FN (Negation 'Haven't had better')",
+          "label": 1,
+          "prob": 0.4728,
+          "pred": 0,
+          "correct": false
+        }
+      }
+    },
+    "R3-2": {
+      "summary": {
+        "tn": 78,
+        "fp": 2,
+        "fn": 11,
+        "tp": 69
+      },
+      "tracked_cases": {
+        "813": {
+          "desc": "FP (Bartender complaint)",
+          "label": 0,
+          "prob": 0.0077,
+          "pred": 0,
+          "correct": true
+        },
+        "1098": {
+          "desc": "FP (Recency bias positive end)",
+          "label": 0,
+          "prob": 0.0812,
+          "pred": 0,
+          "correct": true
+        },
+        "1170": {
+          "desc": "FP (Preamble positive words)",
+          "label": 0,
+          "prob": 0.0055,
+          "pred": 0,
+          "correct": true
+        },
+        "1367": {
+          "desc": "FP (Long sarcastic review)",
+          "label": 0,
+          "prob": 0.1614,
+          "pred": 0,
+          "correct": true
+        },
+        "1378": {
+          "desc": "FP (Subjunctive clause)",
+          "label": 0,
+          "prob": 0.0663,
+          "pred": 0,
+          "correct": true
+        },
+        "46": {
+          "desc": "FN (Negation 'No complaints')",
+          "label": 1,
+          "prob": 0.5906,
+          "pred": 1,
+          "correct": true
+        },
+        "66": {
+          "desc": "FN (Long truncated review)",
+          "label": 1,
+          "prob": 0.0116,
+          "pred": 0,
+          "correct": false
+        },
+        "248": {
+          "desc": "FN (Negation 'cannot describe')",
+          "label": 1,
+          "prob": 0.0023,
+          "pred": 0,
+          "correct": false
+        },
+        "252": {
+          "desc": "FN (Borderline Wicked tickets)",
+          "label": 1,
+          "prob": 0.8693,
+          "pred": 1,
+          "correct": true
+        },
+        "345": {
+          "desc": "FN (Mixed defense of hotel)",
+          "label": 1,
+          "prob": 0.8192,
+          "pred": 1,
+          "correct": true
+        },
+        "402": {
+          "desc": "FN (Recency bias 'regret' end)",
+          "label": 1,
+          "prob": 0.394,
+          "pred": 0,
+          "correct": false
+        },
+        "533": {
+          "desc": "FN (Negation 'Haven't had better')",
+          "label": 1,
+          "prob": 0.9696,
+          "pred": 1,
+          "correct": true
+        }
+      }
+    },
+    "R3-3": {
+      "summary": {
+        "tn": 76,
+        "fp": 4,
+        "fn": 5,
+        "tp": 75
+      },
+      "tracked_cases": {
+        "813": {
+          "desc": "FP (Bartender complaint)",
+          "label": 0,
+          "prob": 0.0325,
+          "pred": 0,
+          "correct": true
+        },
+        "1098": {
+          "desc": "FP (Recency bias positive end)",
+          "label": 0,
+          "prob": 0.0005,
+          "pred": 0,
+          "correct": true
+        },
+        "1170": {
+          "desc": "FP (Preamble positive words)",
+          "label": 0,
+          "prob": 0.0457,
+          "pred": 0,
+          "correct": true
+        },
+        "1367": {
+          "desc": "FP (Long sarcastic review)",
+          "label": 0,
+          "prob": 0.0001,
+          "pred": 0,
+          "correct": true
+        },
+        "1378": {
+          "desc": "FP (Subjunctive clause)",
+          "label": 0,
+          "prob": 0.0017,
+          "pred": 0,
+          "correct": true
+        },
+        "46": {
+          "desc": "FN (Negation 'No complaints')",
+          "label": 1,
+          "prob": 0.5263,
+          "pred": 1,
+          "correct": true
+        },
+        "66": {
+          "desc": "FN (Long truncated review)",
+          "label": 1,
+          "prob": 0.1407,
+          "pred": 0,
+          "correct": false
+        },
+        "248": {
+          "desc": "FN (Negation 'cannot describe')",
+          "label": 1,
+          "prob": 0.0846,
+          "pred": 0,
+          "correct": false
+        },
+        "252": {
+          "desc": "FN (Borderline Wicked tickets)",
+          "label": 1,
+          "prob": 0.992,
+          "pred": 1,
+          "correct": true
+        },
+        "345": {
+          "desc": "FN (Mixed defense of hotel)",
+          "label": 1,
+          "prob": 0.9736,
+          "pred": 1,
+          "correct": true
+        },
+        "402": {
+          "desc": "FN (Recency bias 'regret' end)",
+          "label": 1,
+          "prob": 0.9954,
+          "pred": 1,
+          "correct": true
+        },
+        "533": {
+          "desc": "FN (Negation 'Haven't had better')",
+          "label": 1,
+          "prob": 0.9967,
+          "pred": 1,
+          "correct": true
+        }
+      }
+    },
+    "R3-4": {
+      "summary": {
+        "tn": 70,
+        "fp": 10,
+        "fn": 8,
+        "tp": 72
+      },
+      "tracked_cases": {
+        "813": {
+          "desc": "FP (Bartender complaint)",
+          "label": 0,
+          "prob": 0.9682,
+          "pred": 1,
+          "correct": false
+        },
+        "1098": {
+          "desc": "FP (Recency bias positive end)",
+          "label": 0,
+          "prob": 0.4306,
+          "pred": 0,
+          "correct": true
+        },
+        "1170": {
+          "desc": "FP (Preamble positive words)",
+          "label": 0,
+          "prob": 0.8851,
+          "pred": 1,
+          "correct": false
+        },
+        "1367": {
+          "desc": "FP (Long sarcastic review)",
+          "label": 0,
+          "prob": 0.0297,
+          "pred": 0,
+          "correct": true
+        },
+        "1378": {
+          "desc": "FP (Subjunctive clause)",
+          "label": 0,
+          "prob": 0.9837,
+          "pred": 1,
+          "correct": false
+        },
+        "46": {
+          "desc": "FN (Negation 'No complaints')",
+          "label": 1,
+          "prob": 0.9451,
+          "pred": 1,
+          "correct": true
+        },
+        "66": {
+          "desc": "FN (Long truncated review)",
+          "label": 1,
+          "prob": 0.0399,
+          "pred": 0,
+          "correct": false
+        },
+        "248": {
+          "desc": "FN (Negation 'cannot describe')",
+          "label": 1,
+          "prob": 0.0037,
+          "pred": 0,
+          "correct": false
+        },
+        "252": {
+          "desc": "FN (Borderline Wicked tickets)",
+          "label": 1,
+          "prob": 0.8698,
+          "pred": 1,
+          "correct": true
+        },
+        "345": {
+          "desc": "FN (Mixed defense of hotel)",
+          "label": 1,
+          "prob": 0.3891,
+          "pred": 0,
+          "correct": false
+        },
+        "402": {
+          "desc": "FN (Recency bias 'regret' end)",
+          "label": 1,
+          "prob": 0.9815,
+          "pred": 1,
+          "correct": true
+        },
+        "533": {
+          "desc": "FN (Negation 'Haven't had better')",
+          "label": 1,
+          "prob": 0.9239,
+          "pred": 1,
+          "correct": true
+        }
+      }
+    },
+    "R3-5": {
+      "summary": {
+        "tn": 77,
+        "fp": 3,
+        "fn": 7,
+        "tp": 73
+      },
+      "tracked_cases": {
+        "813": {
+          "desc": "FP (Bartender complaint)",
+          "label": 0,
+          "prob": 0.0049,
+          "pred": 0,
+          "correct": true
+        },
+        "1098": {
+          "desc": "FP (Recency bias positive end)",
+          "label": 0,
+          "prob": 0.0875,
+          "pred": 0,
+          "correct": true
+        },
+        "1170": {
+          "desc": "FP (Preamble positive words)",
+          "label": 0,
+          "prob": 0.0032,
+          "pred": 0,
+          "correct": true
+        },
+        "1367": {
+          "desc": "FP (Long sarcastic review)",
+          "label": 0,
+          "prob": 0.1268,
+          "pred": 0,
+          "correct": true
+        },
+        "1378": {
+          "desc": "FP (Subjunctive clause)",
+          "label": 0,
+          "prob": 0.2302,
+          "pred": 0,
+          "correct": true
+        },
+        "46": {
+          "desc": "FN (Negation 'No complaints')",
+          "label": 1,
+          "prob": 0.4034,
+          "pred": 0,
+          "correct": false
+        },
+        "66": {
+          "desc": "FN (Long truncated review)",
+          "label": 1,
+          "prob": 0.0109,
+          "pred": 0,
+          "correct": false
+        },
+        "248": {
+          "desc": "FN (Negation 'cannot describe')",
+          "label": 1,
+          "prob": 0.0016,
+          "pred": 0,
+          "correct": false
+        },
+        "252": {
+          "desc": "FN (Borderline Wicked tickets)",
+          "label": 1,
+          "prob": 0.9735,
+          "pred": 1,
+          "correct": true
+        },
+        "345": {
+          "desc": "FN (Mixed defense of hotel)",
+          "label": 1,
+          "prob": 0.7713,
+          "pred": 1,
+          "correct": true
+        },
+        "402": {
+          "desc": "FN (Recency bias 'regret' end)",
+          "label": 1,
+          "prob": 0.9101,
+          "pred": 1,
+          "correct": true
+        },
+        "533": {
+          "desc": "FN (Negation 'Haven't had better')",
+          "label": 1,
+          "prob": 0.9228,
+          "pred": 1,
+          "correct": true
+        }
+      }
+    }
+  }
+}

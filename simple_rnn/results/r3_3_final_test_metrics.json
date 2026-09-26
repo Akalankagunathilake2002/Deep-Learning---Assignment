@@ -1,0 +1,54 @@
+{
+  "model": "R3-3 \u2014 Sequence-Averaged Simple RNN",
+  "checkpoint": "C:\\Users\\yuhansi_p\\Documents\\GitHub\\Deep-Learning---Assignment\\simple_rnn\\results\\r3_3_selected_model.keras",
+  "parameter_count": 330369,
+  "validation_metrics": {
+    "accuracy": 0.94375,
+    "loss": 0.13764098286628723,
+    "precision": 0.9493670886075949,
+    "recall": 0.9375,
+    "f1": 0.9433962264150944,
+    "tn": 76,
+    "fp": 4,
+    "fn": 5,
+    "tp": 75
+  },
+  "test_metrics": {
+    "accuracy": 0.95,
+    "loss": 0.18403413891792297,
+    "precision": 0.95,
+    "recall": 0.95,
+    "f1": 0.95,
+    "roc_auc": 0.97953125,
+    "confusion_matrix": {
+      "tn": 76,
+      "fp": 4,
+      "fn": 4,
+      "tp": 76
+    },
+    "total_misclassifications": 8,
+    "false_positives": 4,
+    "false_negatives": 4,
+    "mean_confidence_correct": 0.9673044085502625,
+    "mean_confidence_incorrect": 0.8683212995529175
+  },
+  "baseline_comparison": {
+    "baseline_accuracy": 0.85,
+    "r3_3_accuracy": 0.95,
+    "accuracy_diff": 0.1,
+    "baseline_f1": 0.84,
+    "r3_3_f1": 0.95,
+    "f1_diff": 0.11,
+    "baseline_precision": 0.9,
+    "r3_3_precision": 0.95,
+    "baseline_recall": 0.7875,
+    "r3_3_recall": 0.95,
+    "recall_diff": 0.1625,
+    "baseline_roc_auc": 0.8961,
+    "r3_3_roc_auc": 0.9795,
+    "roc_auc_diff": 0.0834,
+    "baseline_errors": 24,
+    "r3_3_errors": 8,
+    "error_reduction": 16
+  }
+}
