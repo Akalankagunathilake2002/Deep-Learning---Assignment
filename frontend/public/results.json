@@ -1,34 +1,4 @@
 {
- "probes": {
-  "main": {
-   "twelve": {
-    "correct": 6,
-    "total": 12,
-    "negatives_correct": 0,
-    "negatives_total": 6
-   },
-   "twenty": {
-    "correct": 10,
-    "total": 20,
-    "negatives_correct": 0,
-    "negatives_total": 10
-   }
-  },
-  "short": {
-   "twelve": {
-    "correct": 11,
-    "total": 12,
-    "negatives_correct": 5,
-    "negatives_total": 6
-   },
-   "twenty": {
-    "correct": 19,
-    "total": 20,
-    "negatives_correct": 10,
-    "negatives_total": 10
-   }
-  }
- },
  "main": {
   "accuracy": 0.88125,
   "precision": 0.9178082191780822,
@@ -60,26 +30,6 @@
    ]
   },
   "validation_accuracy": 0.9375
- },
- "short": {
-  "accuracy": 0.8875,
-  "precision": 0.8780487804878049,
-  "recall": 0.9,
-  "f1": 0.8888888888888888,
-  "roc_auc": 0.94359375,
-  "training_time_sec": 56.44,
-  "trainable_params": 347073,
-  "epochs_run": 13,
-  "best_epoch": 8,
-  "confusion_matrix": {
-   "tn": 70,
-   "fp": 10,
-   "fn": 8,
-   "tp": 72
-  },
-  "validation_accuracy": 0.9437,
-  "one_liners_correct_of_12": 11,
-  "new_one_liners_correct_of_20": 19
  },
  "robustness": {
   "runs": 6,

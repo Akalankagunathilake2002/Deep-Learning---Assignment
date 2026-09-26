@@ -10,13 +10,8 @@
  "models": [
   {
    "id": "main",
-   "name": "Main GRU",
+   "name": "GRU",
    "dir": "main"
-  },
-  {
-   "id": "short",
-   "name": "GRU + short examples",
-   "dir": "short"
   }
  ]
 }

@@ -1,0 +1,58 @@
+{
+  "model": "1D CNN",
+  "key": "cnn1d",
+  "architecture": "Embedding(5000, 64) -> Conv1D(128, kernel_size=5, relu) -> GlobalMaxPooling1D -> Dense(32, relu) -> Dropout(0.3) -> Dense(1, sigmoid)",
+  "trainable_params": 365249,
+  "total_params": 365249,
+  "epochs_run": 13,
+  "best_epoch": 8,
+  "best_val_loss": 0.146252,
+  "best_val_accuracy": 0.9563,
+  "training_time_sec": 4.54,
+  "accuracy": 0.90625,
+  "precision": 0.8735632183908046,
+  "recall": 0.95,
+  "f1": 0.9101796407185628,
+  "roc_auc": 0.96234375,
+  "confusion_matrix": {
+    "tn": 69,
+    "fp": 11,
+    "fn": 4,
+    "tp": 76
+  },
+  "bootstrap_95ci": {
+    "accuracy": [
+      0.85625,
+      0.94375
+    ],
+    "f1": [
+      0.8607594936708861,
+      0.950006906077348
+    ],
+    "roc_auc": [
+      0.928512684270312,
+      0.9886081502079669
+    ]
+  },
+  "loss": "binary_crossentropy",
+  "optimizer": "Adam",
+  "learning_rate": 0.001,
+  "batch_size": 32,
+  "max_epochs": 30,
+  "early_stopping_monitor": "val_loss",
+  "early_stopping_patience": 5,
+  "restore_best_weights": true,
+  "threshold": 0.5,
+  "seed": 42,
+  "vocab_size": 5000,
+  "max_len": 300,
+  "embed_dim": 64,
+  "padding": "pre",
+  "truncating": "post",
+  "dense_head": "Dense(32, relu) -> Dropout(0.3) -> Dense(1, sigmoid)",
+  "class_weight": {
+    "0": 1.0031446540880504,
+    "1": 0.996875
+  },
+  "n_test": 160
+}

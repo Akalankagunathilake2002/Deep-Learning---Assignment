@@ -19,8 +19,8 @@ gru/   (macOS treats GRU/ and gru/ as the same folder)
 ├── 11_Error_Analysis/         GRU_Error_Analysis.ipynb
 ├── 12_Robustness_Check/       GRU_Robustness_Check.ipynb
 ├── 13_Handover/               GRU_Handover.ipynb
-├── 14_Optional_Extension/     GRU_Optional_Extension.ipynb   (also has the "try your own reviews" demo)
-├── GRU_model.ipynb            the same 14 steps in ONE notebook (simplest for Colab)
+├── GRU_model.ipynb            the same 13 steps in ONE notebook (simplest for Colab, and it has
+│                              the "try your own reviews" demo at the end)
 ├── results/                   figures, metrics, predictions, trained models
 └── docs/                      report section and viva notes
 ```
@@ -36,11 +36,11 @@ python3.12 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Open the notebooks in order, `01_Setup` to `14_Optional_Extension`, and choose *Run All* in each. The dataset is found in `../dataset/`.
+Open the notebooks in order, `01_Setup` to `13_Handover`, and choose *Run All* in each. The dataset is found in `../dataset/`.
 
 **Google Colab.** Colab opens every notebook in its own session, so for each notebook: upload it, choose *Runtime → Run all*, and pick `deceptive-opinion.csv` when it asks. Colab's disk is temporary, so download `results/` when you finish. Or upload just `GRU_model.ipynb`, which contains everything and needs one upload and one run.
 
-**Any notebook can be run on its own.** Notebooks 09 to 14 need the trained GRU. They load it from `results/` if notebook 08 has already saved it there, and otherwise train it automatically first (about 15 seconds, same seed and settings, so the same result).
+**Any notebook can be run on its own.** Notebooks 09 to 13 need the trained GRU. They load it from `results/` if notebook 08 has already saved it there, and otherwise train it automatically first (about 15 seconds, same seed and settings, so the same result).
 
 ## What each notebook does and saves
 
@@ -59,7 +59,6 @@ Open the notebooks in order, `01_Setup` to `14_Optional_Extension`, and choose *
 | 11 | Error analysis (descriptive only) | nothing |
 | 12 | Robustness across 5 other random seeds | `gru_seed_robustness.csv` |
 | 13 | Row for the group comparison table, file list | nothing |
-| 14 | Optional short-review extension (GRU only) and the demo | `gru_short_model.keras`, `gru_short_extension_metrics.json` |
 
 Notebook `NN` here is the "Step NN-1" of the earlier all-in-one notebook.
 

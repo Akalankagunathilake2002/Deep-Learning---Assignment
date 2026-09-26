@@ -125,8 +125,7 @@ export default function TryIt({ state }) {
             <strong>Your result will appear here.</strong>
             <span>Type a review or pick an example, then press Analyze.</span>
             <span className="small muted">
-              You get two answers. The <b>main GRU</b> was trained on the original reviews. <b>GRU + short examples</b> is an optional
-              extension that also saw one- and two-sentence chunks.
+              The <b>GRU</b> reads the review one word at a time and returns the probability that it is positive.
             </span>
           </div>
         )}
@@ -139,12 +138,11 @@ export default function TryIt({ state }) {
 
             {analysis.short && (
               <Notice>
-                <b>Short review.</b> This has {plural(analysis.nWords, "word")}, and the shortest original training review has{" "}
-                {config.minTrainWords}. The main GRU tends to call very short reviews positive, so lean on the second model here (it was
-                also trained on short examples). Either can still be wrong.
+                <b>Short review.</b> This has {plural(analysis.nWords, "word")}, and the shortest training review has{" "}
+                {config.minTrainWords}. The model never saw text this short while training and tends to call very short reviews positive, so
+                treat this result with care.
               </Notice>
             )}
-            {analysis.disagree && <Notice>The two models disagree. That usually happens with short or mixed reviews, so treat this result with care.</Notice>}
             {analysis.truncated && <Notice>Only the first {config.maxLen} words are used.</Notice>}
 
             {analysis.results.length > 0 && (
@@ -160,7 +158,7 @@ export default function TryIt({ state }) {
             {results && (
               <p className="footnote small muted">
                 These probabilities are over-confident, so 99% here does not mean 99% sure. On {results.split.test} test reviews the model
-                had never seen, the main GRU was right {pct(results.main.accuracy, 0)} of the time.
+                had never seen, the GRU was right {pct(results.main.accuracy, 0)} of the time.
               </p>
             )}
           </>

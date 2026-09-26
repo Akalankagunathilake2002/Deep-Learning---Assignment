@@ -53,7 +53,7 @@ describe("word ids match Python", () => {
 });
 
 describe("the JavaScript GRU gives the same probability as Keras", () => {
-  it.each(["main", "short"])("%s model on all reference texts", (id) => {
+  it.each(["main"])("%s model on all reference texts", (id) => {
     let worst = 0;
     for (const f of fixtures) {
       const p = byId[id].predict(prepareInput(f.text, vocab, config).input);
@@ -68,7 +68,7 @@ describe("analyze()", () => {
     const a = analyze("We had a wonderful stay. The staff were friendly, the room was spotless and the bed was very comfortable. We loved the location and the breakfast. Highly recommended and we will be back next year.", engine);
     expect(a.empty).toBe(false);
     expect(a.short).toBe(false);
-    expect(a.results.map((r) => r.id)).toEqual(["main", "short"]);
+    expect(a.results.map((r) => r.id)).toEqual(["main"]);
     expect(a.results.every((r) => r.p >= 0 && r.p <= 1)).toBe(true);
   });
 

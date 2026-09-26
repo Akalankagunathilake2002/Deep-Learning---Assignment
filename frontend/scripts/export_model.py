@@ -7,7 +7,6 @@ Run it from the repository root with a Python that has TensorFlow (see requireme
 The exported files are committed, so you only need to run this again if the models are retrained.
 It uses the shared data pipeline (../shared) only to rebuild the training vocabulary and the reference outputs.
 """
-import ast
 import json
 import shutil
 import sys
@@ -29,7 +28,7 @@ PUBLIC = ROOT / "frontend" / "public"
 MODEL_DIR = PUBLIC / "model"
 FIXTURES = ROOT / "frontend" / "src" / "lib" / "__fixtures__" / "fixtures.json"
 
-MODELS = {"main": RESULTS / "gru_model.keras", "short": RESULTS / "gru_short_model.keras"}
+MODELS = {"main": RESULTS / "gru_model.keras"}
 FIGURES = ["gru_accuracy_curve.png", "gru_loss_curve.png", "gru_confusion_matrix.png", "gru_roc_curve.png",
            "gru_probability_hist.png"]
 
@@ -64,25 +63,6 @@ def numpy_forward(w, ids):
         h = z * h + (1 - z) * hh
     a = np.maximum(h @ w["dense1_kernel"] + w["dense1_bias"], 0)
     return sigmoid(a @ w["dense2_kernel"] + w["dense2_bias"]).ravel()
-
-
-def load_probes():
-    """The one-line probe reviews from notebook 14 (12 written first, 20 written later). Read from the notebook itself."""
-    nb = json.loads((ROOT / "gru" / "14_Optional_Extension" / "GRU_Optional_Extension.ipynb").read_text())
-    source = next("".join(c["source"]) for c in nb["cells"] if c["cell_type"] == "code" and "short_probes = [" in "".join(c["source"]))
-    found = {}
-    for node in ast.parse(source).body:
-        if isinstance(node, ast.Assign) and getattr(node.targets[0], "id", "") in ("short_probes", "fresh_probes"):
-            found[node.targets[0].id] = ast.literal_eval(node.value)
-    return found["short_probes"], found["fresh_probes"]
-
-
-def probe_scores(model, items, vocab):
-    X = P.pad([P.encode(P.tokenize(t), vocab) for t, _ in items])
-    y = np.array([label for _, label in items])
-    pred = (model.predict(X, verbose=0).ravel() >= C.THRESHOLD).astype(int)
-    return {"correct": int((pred == y).sum()), "total": int(len(y)),
-            "negatives_correct": int((pred[y == 0] == 0).sum()), "negatives_total": int((y == 0).sum())}
 
 
 def write_weights(name, w):
@@ -124,31 +104,20 @@ def main():
     (MODEL_DIR / "config.json").write_text(json.dumps({
         "maxLen": C.MAX_LEN, "vocabSize": C.VOCAB_SIZE, "padToken": C.PAD_TOKEN, "oovToken": C.OOV_TOKEN,
         "padding": C.PADDING, "truncating": C.TRUNCATING, "threshold": C.THRESHOLD, "minTrainWords": min_words,
-        "models": [{"id": "main", "name": "Main GRU", "dir": "main"},
-                   {"id": "short", "name": "GRU + short examples", "dir": "short"}]}, indent=1))
+        "models": [{"id": "main", "name": "GRU", "dir": "main"}]}, indent=1))
 
     # ---- figures and results shown on the "Results" tab
     (PUBLIC / "figures").mkdir(parents=True, exist_ok=True)
     for f in FIGURES:
         shutil.copy(RESULTS / f, PUBLIC / "figures" / f)
     main_m = json.loads((RESULTS / "gru_metrics.json").read_text())
-    short_m = json.loads((RESULTS / "gru_short_extension_metrics.json").read_text())
     hist = pd.read_csv(RESULTS / "gru_history.csv")
     seeds = pd.read_csv(RESULTS / "gru_seed_robustness.csv")
     keep = ["accuracy", "precision", "recall", "f1", "roc_auc", "training_time_sec", "trainable_params", "epochs_run",
             "best_epoch", "confusion_matrix"]
-    twelve, twenty = load_probes()
-    probes = {name: {"twelve": probe_scores(m, twelve, vocab), "twenty": probe_scores(m, twenty, vocab)}
-              for name, m in models.items()}
-    assert probes["short"]["twelve"]["correct"] == short_m["one_liners_correct_of_12"], "probe sets do not match notebook 14"
-    assert probes["short"]["twenty"]["correct"] == short_m["new_one_liners_correct_of_20"], "probe sets do not match notebook 14"
     results = {
-        "probes": probes,
         "main": {**{k: main_m[k] for k in keep}, "bootstrap_95ci": main_m["bootstrap_95ci"],
                  "validation_accuracy": float(hist.loc[main_m["best_epoch"] - 1, "val_accuracy"])},
-        "short": {**{k: short_m[k] for k in keep}, "validation_accuracy": short_m["validation_accuracy"],
-                  "one_liners_correct_of_12": short_m["one_liners_correct_of_12"],
-                  "new_one_liners_correct_of_20": short_m["new_one_liners_correct_of_20"]},
         "robustness": {"runs": int(len(seeds)), **{f"{c}_{s}": float(getattr(seeds[c], s)()) for c in
                        ("test_acc", "test_f1", "test_auc") for s in ("mean", "std")}},
         "split": {"train": int(len(data.y_train)), "validation": int(len(data.y_val)), "test": int(len(data.y_test))},
@@ -172,7 +141,7 @@ def main():
     probs = {name: m.predict(X, verbose=0).ravel() for name, m in models.items()}
     FIXTURES.parent.mkdir(parents=True, exist_ok=True)
     FIXTURES.write_text(json.dumps([
-        {"text": t, "clean": P.clean_text(t), "ids": ids, "main": float(probs["main"][i]), "short": float(probs["short"][i])}
+        {"text": t, "clean": P.clean_text(t), "ids": ids, "main": float(probs["main"][i])}
         for i, (t, ids) in enumerate(zip(texts, ids_list))], separators=(",", ":")))
     print(f"exported {len(texts)} test vectors, vocabulary of {len(vocab)} ids, models: {', '.join(MODELS)}")
 

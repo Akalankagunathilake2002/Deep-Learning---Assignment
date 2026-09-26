@@ -21,7 +21,6 @@ function Figure({ file, alt, children }) {
   );
 }
 
-const fraction = (x) => `${x.correct}/${x.total}`;
 
 export default function ResultsTab({ state }) {
   if (state.status === "loading") {
@@ -42,13 +41,9 @@ export default function ResultsTab({ state }) {
     );
   }
 
-  const { main, short, probes, robustness, split } = r;
+  const { main, robustness, split } = r;
   const cm = main.confusion_matrix;
   const [accLow, accHigh] = main.bootstrap_95ci.accuracy;
-  const testGap = Math.round(Math.abs(short.accuracy - main.accuracy) * split.test);
-  const negTotal = probes.main.twelve.negatives_total + probes.main.twenty.negatives_total;
-  const negMain = probes.main.twelve.negatives_correct + probes.main.twenty.negatives_correct;
-  const negShort = probes.short.twelve.negatives_correct + probes.short.twenty.negatives_correct;
 
   return (
     <div className="results-page">
@@ -125,84 +120,12 @@ export default function ResultsTab({ state }) {
         </div>
       </section>
 
-      <section className="card" aria-labelledby="compare-title">
-        <h2 id="compare-title">Main GRU and the short-review extension</h2>
-        <p className="muted">
-          The extension is the same GRU, also trained on one- and two-sentence chunks cut from the training reviews. It is optional and not
-          part of the four-model comparison.
-        </p>
-        <div className="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">Measure</th>
-                <th scope="col">Main GRU</th>
-                <th scope="col">GRU + short examples</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">Validation accuracy</th>
-                <td>{pct(main.validation_accuracy)}</td>
-                <td>{pct(short.validation_accuracy)}</td>
-              </tr>
-              <tr>
-                <th scope="row">Test accuracy</th>
-                <td>{pct(main.accuracy)}</td>
-                <td>{pct(short.accuracy)}</td>
-              </tr>
-              <tr>
-                <th scope="row">Test F1 score</th>
-                <td>{pct(main.f1)}</td>
-                <td>{pct(short.f1)}</td>
-              </tr>
-              <tr>
-                <th scope="row">Test ROC-AUC</th>
-                <td>{main.roc_auc.toFixed(3)}</td>
-                <td>{short.roc_auc.toFixed(3)}</td>
-              </tr>
-              <tr>
-                <th scope="row">One-line reviews right (first 12)</th>
-                <td>{fraction(probes.main.twelve)}</td>
-                <td>{fraction(probes.short.twelve)}</td>
-              </tr>
-              <tr>
-                <th scope="row">One-line reviews right (later 20)</th>
-                <td>{fraction(probes.main.twenty)}</td>
-                <td>{fraction(probes.short.twenty)}</td>
-              </tr>
-              <tr>
-                <th scope="row">Negative one-liners right (all {negTotal})</th>
-                <td>{negMain}/{negTotal}</td>
-                <td>{negShort}/{negTotal}</td>
-              </tr>
-              <tr>
-                <th scope="row">Training time / epochs</th>
-                <td>
-                  {Math.round(main.training_time_sec)} s / {main.epochs_run}
-                </td>
-                <td>
-                  {Math.round(short.training_time_sec)} s / {short.epochs_run}
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        {testGap <= 2 && negShort > negMain && (
-          <p className="small muted">
-            The test accuracies differ by {plural(testGap, "review")} out of {split.test}, well within the noise of a small test set. The
-            extension helps with short reviews without hurting full-length ones.
-          </p>
-        )}
-      </section>
-
       <section className="card" aria-labelledby="limits-title">
         <h2 id="limits-title">Limitations</h2>
         <ul className="limits">
           <li>
-            <b>Very short reviews.</b> Every training review has at least 25 words and positive reviews are shorter on average, so the main
-            GRU learned that short means positive. It got {negMain} of {negTotal} negative one-liners right. The extension gets {negShort} of{" "}
-            {negTotal}, but still misses some.
+            <b>Very short reviews.</b> Every training review has at least 25 words and positive reviews are shorter on average, so the model
+            learned that short means positive. One-line reviews are therefore unreliable, especially negative ones.
           </li>
           <li>
             <b>Over-confidence.</b> Wrong answers are often given with more than 90% confidence, so a high percentage is not a guarantee.

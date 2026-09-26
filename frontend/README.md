@@ -25,9 +25,9 @@ Open the app through `npm run dev` or `npm run preview`. Double-clicking `index.
 ## What you see
 
 - **Try it**: type or paste a review, or pick an example, then press *Analyze review* (or Ctrl/⌘ + Enter). You get one answer per model, each with the probability that the review is positive and a meter with the 0.5 cut-off marked. A panel shows exactly what the models received: the cleaned text and each word, with unknown words marked.
-- **Results & about**: how the model works, the saved test-set results (accuracy, precision, recall, F1, ROC-AUC), the training curves, the confusion matrix, the ROC curve, a comparison of the two models, and the limitations.
+- **Results & about**: how the model works, the saved test-set results (accuracy, precision, recall, F1, ROC-AUC), the training curves, the confusion matrix, the ROC curve, and the limitations.
 
-The two models are the **main GRU** (the model reported in the group comparison) and **GRU + short examples**, the optional extension from `gru/14_Optional_Extension` that was also trained on one- and two-sentence chunks. The page warns when a review is shorter than any original training review, because the main GRU is unreliable on very short text.
+The model is the **GRU** reported in the group comparison. The page warns when a review is shorter than any training review, because the model is unreliable on very short text.
 
 ## How it works
 
@@ -53,7 +53,7 @@ Run this from the repository root with a Python that has TensorFlow (see `requir
 python frontend/scripts/export_model.py
 ```
 
-It rebuilds `public/model/`, `public/results.json`, the figures and the test fixtures, and it stops with an error if the exported model does not reproduce the reported test accuracy. It reads the shared data pipeline in `../shared/` and the probe sentences in `gru/14_Optional_Extension`.
+It rebuilds `public/model/`, `public/results.json`, the figures and the test fixtures, and it stops with an error if the exported model does not reproduce the reported test accuracy. It reads the shared data pipeline in `../shared/`.
 
 ## Files
 

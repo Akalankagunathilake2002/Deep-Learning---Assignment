@@ -1,0 +1,15 @@
+{
+  "python": "3.12.13",
+  "tensorflow": "2.21.0",
+  "keras": "3.15.1",
+  "numpy": "2.5.3",
+  "pandas": "3.0.6",
+  "scikit_learn": "1.9.1",
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "machine": "arm64",
+  "cpu": "Apple M4",
+  "physical_cores": 10,
+  "ram_gb": 16,
+  "gpus": [],
+  "note": "All four models in this run were trained in one session on this single machine, so their training times are directly comparable with each other. They are still not comparable with times recorded in the earlier per-model notebooks, which ran on different machines."
+}
