@@ -3,6 +3,8 @@ import LstmResultsTab from "./components/lstm/LstmResultsTab.jsx";
 import LstmTryIt from "./components/lstm/LstmTryIt.jsx";
 import ModelProfile from "./components/ModelProfile.jsx";
 import ResultsTab from "./components/ResultsTab.jsx";
+import RnnResultsTab from "./components/rnn/RnnResultsTab.jsx";
+import RnnTryIt from "./components/rnn/RnnTryIt.jsx";
 import Sidebar from "./components/Sidebar.jsx";
 import TryIt from "./components/TryIt.jsx";
 import { useEngine } from "./useEngine.js";
@@ -173,6 +175,65 @@ export default function App({ load }) {
 
               <footer className="footer small muted">
                 SE4050 Deep Learning 2026 · LSTM individual contribution. The model runs entirely in your browser: nothing you type is sent anywhere.
+              </footer>
+            </>
+          ) : activeModel === "rnn" ? (
+            <>
+              <header className="header">
+                <span className="logo" aria-hidden="true">
+                  <svg viewBox="0 0 32 32" width="40" height="40">
+                    <rect width="32" height="32" rx="8" fill="currentColor" />
+                    <path
+                      d="M8 21l5-6 4 4 7-9"
+                      fill="none"
+                      stroke="#fff"
+                      strokeWidth="2.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                    <circle cx="24" cy="10" r="2" fill="#eb6834" />
+                  </svg>
+                </span>
+                <div>
+                  <div className="header-badge-row">
+                    <h1>Hotel review sentiment</h1>
+                    <span className="status-badge active">Simple RNN Model</span>
+                  </div>
+                  <p className="muted">
+                    A Simple RNN deep-learning model that reads a review and predicts positive or negative
+                  </p>
+                </div>
+              </header>
+
+              <div role="tablist" aria-label="Sections" className="tabs" onKeyDown={onKeyDown}>
+                {TABS.map((t) => (
+                  <button
+                    key={t.id}
+                    id={`tab-${t.id}`}
+                    type="button"
+                    role="tab"
+                    aria-selected={tab === t.id}
+                    aria-controls={`panel-${t.id}`}
+                    tabIndex={tab === t.id ? 0 : -1}
+                    className="tab"
+                    onClick={() => setTab(t.id)}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+
+              <main>
+                <div role="tabpanel" id="panel-try" aria-labelledby="tab-try" hidden={tab !== "try"}>
+                  <RnnTryIt state={state} />
+                </div>
+                <div role="tabpanel" id="panel-results" aria-labelledby="tab-results" hidden={tab !== "results"}>
+                  <RnnResultsTab state={state} />
+                </div>
+              </main>
+
+              <footer className="footer small muted">
+                SE4050 Deep Learning 2026 · Simple RNN individual contribution. The model runs entirely in your browser: nothing you type is sent anywhere.
               </footer>
             </>
           ) : (
