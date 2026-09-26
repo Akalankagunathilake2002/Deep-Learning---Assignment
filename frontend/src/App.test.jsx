@@ -142,13 +142,11 @@ describe("Sidebar and Model Selection", () => {
     expect(screen.getByRole("button", { name: /1D CNN/ })).toBeInTheDocument();
   });
 
-  it("switches to RNN profile and shows Under Development status", async () => {
+  it("switches to RNN profile and shows Simple RNN interface", async () => {
     await openApp();
     fireEvent.click(screen.getByRole("button", { name: /RNN/ }));
-    expect(await screen.findByRole("heading", { name: "Simple RNN" })).toBeInTheDocument();
-    expect(screen.getByText("Under Development")).toBeInTheDocument();
-    expect(screen.getByText("SimpleRNN(64)")).toBeInTheDocument();
-    expect(screen.queryByLabelText("Hotel review")).not.toBeInTheDocument();
+    expect(await screen.findByText("Simple RNN Model")).toBeInTheDocument();
+    expect(screen.getByLabelText("Hotel review")).toBeInTheDocument();
   });
 
   it("switches to LSTM profile and 1D CNN profile", async () => {
@@ -163,12 +161,12 @@ describe("Sidebar and Model Selection", () => {
   it("returns to GRU and restores the live sentiment analyzer", async () => {
     await openApp();
     fireEvent.click(screen.getByRole("button", { name: /RNN/ }));
-    expect(screen.queryByLabelText("Hotel review")).not.toBeInTheDocument();
+    expect(await screen.findByText("Simple RNN Model")).toBeInTheDocument();
 
-    const switchBtn = screen.getByRole("button", { name: /Try Live GRU Model/ });
-    fireEvent.click(switchBtn);
+    const gruBtn = screen.getByRole("button", { name: /GRU/ });
+    fireEvent.click(gruBtn);
 
-    expect(await screen.findByLabelText("Hotel review")).toBeInTheDocument();
+    expect(await screen.findByText("GRU Reference Model")).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Try it" })).toBeInTheDocument();
   });
 });

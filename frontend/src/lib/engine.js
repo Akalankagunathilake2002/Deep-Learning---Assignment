@@ -1,6 +1,7 @@
 import { Cnn1dModel } from "./cnn1d.js";
 import { GruModel } from "./gru.js";
 import { LstmModel } from "./lstm.js";
+import { RnnModel } from "./rnn.js";
 import { prepareInput } from "./pipeline.js";
 
 const BASE = import.meta.env?.BASE_URL ?? "./";
@@ -48,6 +49,15 @@ export async function loadLstmModel(base = BASE) {
     get(base, "model/lstm/weights.bin", "arrayBuffer"),
   ]);
   return new LstmModel(manifest, weights);
+}
+
+/** Load the trained Simple RNN model exported for the browser. */
+export async function loadRnnModel(base = BASE) {
+  const [manifest, weights] = await Promise.all([
+    get(base, "model/rnn/manifest.json", "json"),
+    get(base, "model/rnn/weights.bin", "arrayBuffer"),
+  ]);
+  return new RnnModel(manifest, weights);
 }
 
 /** The saved test-set results shown on the Results tab. The page still works if this file is missing. */

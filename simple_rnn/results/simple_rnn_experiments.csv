@@ -1,0 +1,5 @@
+experiment_id,description,embedding_dim,rnn_units,learning_rate,param_count,epochs_run,best_epoch,train_accuracy,val_loss,val_accuracy,val_precision,val_recall,val_f1,training_time_sec
+Baseline,"Baseline (Emb=64, RNN=64, lr=0.001)",64,64,0.001,330369,14,9,0.9937,0.3318,0.8875,0.9306,0.8375,0.8816,45.04
+Exp_1,"Exp 1: Embedding=128 (RNN=64, lr=0.001)",128,64,0.001,654465,10,5,0.9091,0.5031,0.75,0.7564,0.7375,0.7468,35.99
+Exp_2,"Exp 2: RNN=128 (Emb=64, lr=0.001)",64,128,0.001,348865,7,2,0.5125,0.6771,0.625,0.5943,0.7875,0.6774,17.6
+Exp_3,"Exp 3: Emb=128, RNN=128, lr=0.0005",128,128,0.0005,677057,12,7,0.9828,0.2975,0.8875,0.8875,0.8875,0.8875,34.49

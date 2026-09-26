@@ -1,0 +1,68 @@
+{
+ "dtype": "float32",
+ "units": 64,
+ "pooling": "global_average_pooling_1d",
+ "tensors": {
+  "embedding": {
+   "shape": [
+    5000,
+    64
+   ],
+   "offset": 0,
+   "length": 320000
+  },
+  "rnn_kernel": {
+   "shape": [
+    64,
+    64
+   ],
+   "offset": 320000,
+   "length": 4096
+  },
+  "rnn_recurrent_kernel": {
+   "shape": [
+    64,
+    64
+   ],
+   "offset": 324096,
+   "length": 4096
+  },
+  "rnn_bias": {
+   "shape": [
+    64
+   ],
+   "offset": 328192,
+   "length": 64
+  },
+  "dense1_kernel": {
+   "shape": [
+    64,
+    32
+   ],
+   "offset": 328256,
+   "length": 2048
+  },
+  "dense1_bias": {
+   "shape": [
+    32
+   ],
+   "offset": 330304,
+   "length": 32
+  },
+  "dense2_kernel": {
+   "shape": [
+    32,
+    1
+   ],
+   "offset": 330336,
+   "length": 32
+  },
+  "dense2_bias": {
+   "shape": [
+    1
+   ],
+   "offset": 330368,
+   "length": 1
+  }
+ }
+}

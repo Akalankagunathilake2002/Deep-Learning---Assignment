@@ -5,8 +5,8 @@ export const MODELS = [
     fullName: "Simple RNN",
     category: "Recurrent",
     desc: "Vanilla recurrent network with un-gated hidden state",
-    status: "pending",
-    badge: "In Dev",
+    status: "active",
+    badge: "Active",
   },
   {
     id: "lstm",

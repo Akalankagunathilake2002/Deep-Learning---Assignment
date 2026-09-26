@@ -266,5 +266,111 @@
    "test_auc_mean": 0.9614322916666667,
    "test_auc_std": 0.005322986877850024
   }
+ },
+ "rnn": {
+  "name": "Simple RNN",
+  "architecture": "Sequence-Averaged SimpleRNN(64) + GlobalAveragePooling1D",
+  "accuracy": 0.95,
+  "precision": 0.95,
+  "recall": 0.95,
+  "f1": 0.95,
+  "roc_auc": 0.97953125,
+  "training_time_sec": 47.95,
+  "trainable_params": 330369,
+  "epochs_run": 18,
+  "best_epoch": 13,
+  "confusion_matrix": {
+   "tn": 76,
+   "fp": 4,
+   "fn": 4,
+   "tp": 76
+  },
+  "bootstrap_95ci": {
+   "accuracy": [
+    0.9125,
+    0.98125
+   ],
+   "f1": [
+    0.9138666201928662,
+    0.9818289402904787
+   ],
+   "roc_auc": [
+    0.95716127519925,
+    0.9954725878478736
+   ]
+  },
+  "validation_accuracy": 0.94375,
+  "validation_loss": 0.13764098,
+  "robustness": {
+   "runs": 6,
+   "test_acc_mean": 0.8302083333333333,
+   "test_acc_std": 0.03820517526025322,
+   "test_f1_mean": 0.8221975689163803,
+   "test_f1_std": 0.042769242616768066,
+   "test_auc_mean": 0.8873958333333333,
+   "test_auc_std": 0.020264526682522495,
+   "seeds": [
+    {
+     "seed": 42,
+     "epochs": 13,
+     "val_acc": 0.925000011920929,
+     "test_acc": 0.85,
+     "test_f1": 0.84,
+     "test_auc": 0.89609375
+    },
+    {
+     "seed": 1,
+     "epochs": 13,
+     "val_acc": 0.8687499761581421,
+     "test_acc": 0.81875,
+     "test_f1": 0.8104575163398693,
+     "test_auc": 0.87203125
+    },
+    {
+     "seed": 2,
+     "epochs": 26,
+     "val_acc": 0.7875000238418579,
+     "test_acc": 0.84375,
+     "test_f1": 0.84472049689441,
+     "test_auc": 0.8937499999999999
+    },
+    {
+     "seed": 3,
+     "epochs": 11,
+     "val_acc": 0.925000011920929,
+     "test_acc": 0.8,
+     "test_f1": 0.7681159420289855,
+     "test_auc": 0.8846875
+    },
+    {
+     "seed": 4,
+     "epochs": 16,
+     "val_acc": 0.931249976158142,
+     "test_acc": 0.8875,
+     "test_f1": 0.8846153846153846,
+     "test_auc": 0.91796875
+    },
+    {
+     "seed": 5,
+     "epochs": 12,
+     "val_acc": 0.8125,
+     "test_acc": 0.78125,
+     "test_f1": 0.7852760736196319,
+     "test_auc": 0.85984375
+    }
+   ]
+  },
+  "figures": {
+   "accuracy_curve": "simple_rnn_accuracy_curve.png",
+   "loss_curve": "simple_rnn_loss_curve.png",
+   "confusion_matrix": "simple_rnn_confusion_matrix.png",
+   "roc_curve": "simple_rnn_roc_curve.png",
+   "probability_hist": "simple_rnn_probability_hist.png",
+   "review_length": "simple_rnn_eda_review_length.png",
+   "class_balance": "simple_rnn_eda_class_balance.png",
+   "distinctive_words": "simple_rnn_eda_distinctive_words.png",
+   "length_outliers": "simple_rnn_audit_length_outliers.png"
+  },
+  "total_params": 330369
  }
 }
