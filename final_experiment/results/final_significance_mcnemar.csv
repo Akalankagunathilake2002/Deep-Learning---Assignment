@@ -1,0 +1,7 @@
+Model A,Model B,"A right, B wrong","A wrong, B right",p-value,Significant (0.05)
+Simple RNN,LSTM,8,2,0.1094,no
+Simple RNN,GRU,10,6,0.4545,no
+Simple RNN,1D CNN,8,5,0.5811,no
+LSTM,GRU,5,7,0.7744,no
+LSTM,1D CNN,7,10,0.6291,no
+GRU,1D CNN,5,6,1.0,no

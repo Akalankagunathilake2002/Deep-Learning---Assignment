@@ -20,7 +20,7 @@ export const MODELS = [
   {
     id: "gru",
     shortName: "GRU",
-    fullName: "GRU (Reference)",
+    fullName: "GRU",
     category: "Recurrent",
     desc: "Gated Recurrent Unit with reset and update gates",
     status: "active",

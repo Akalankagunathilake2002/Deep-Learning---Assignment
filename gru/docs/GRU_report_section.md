@@ -1,6 +1,6 @@
 # GRU model: hotel review sentiment classification
 
-*Figure files are in `gru/results/`. All numbers come from the GRU notebooks (`gru/GRU_model.ipynb`, or the same steps split into `gru/01_Setup` to `gru/14_Optional_Extension`; seed 42, executed end to end; re-runs and the split notebooks reproduced identical results).*
+*Figure files are in `gru/results/`. All numbers come from the GRU notebooks (`gru/GRU_model.ipynb`, or the same steps split into `gru/01_Setup` to `gru/13_Handover`; seed 42, executed end to end; re-runs and the split notebooks reproduced identical results).*
 
 ## 1. Role of the GRU in the study
 
@@ -132,7 +132,7 @@ The `deceptive`/`truthful` field is not a model input; it is used here only to d
 
 **Strengths.** Reads text in order, so negation and contrast can be captured; trains in seconds; small recurrent layer; strong ROC-AUC (0.937) meaning positive reviews are usually ranked above negative ones; all results are reproducible from a fixed seed and a fixed, committed split.
 
-**Limitations.** Overfits quickly on 1,276 training reviews and needs early stopping and heavy dropout; over-confident probabilities; the whole review is compressed into one 64-number vector, and long reviews are cut at 300 tokens; embeddings are learned from scratch on little data; very short texts are unreliable, because every training review has at least 25 words and positive reviews are shorter on average, so the model appears to have learned that short means positive (in an informal check with the notebook's demo function, five clearly negative one-line reviews such as "Terrible hotel, dirty room and rude staff." were all labelled positive, with P(positive) between 0.98 and 1.00; multi-sentence reviews of similar sentiment were classified correctly; Section 12 describes an optional mitigation); the test set is small, so results carry roughly ±4.5 points of uncertainty; the dataset is a single-city, curated corpus containing crowd-written fake reviews, so results may not transfer to other hotel-review sources.
+**Limitations.** Overfits quickly on 1,276 training reviews and needs early stopping and heavy dropout; over-confident probabilities; the whole review is compressed into one 64-number vector, and long reviews are cut at 300 tokens; embeddings are learned from scratch on little data; very short texts are unreliable, because every training review has at least 25 words and positive reviews are shorter on average, so the model appears to have learned that short means positive (in an informal check with the notebook's demo function, five clearly negative one-line reviews such as "Terrible hotel, dirty room and rude staff." were all labelled positive, with P(positive) between 0.98 and 1.00; multi-sentence reviews of similar sentiment were classified correctly; no mitigation is applied, because any fix would have to be applied to all four models for the comparison to stay fair); the test set is small, so results carry roughly ±4.5 points of uncertainty; the dataset is a single-city, curated corpus containing crowd-written fake reviews, so results may not transfer to other hotel-review sources.
 
 ## 10. Row for the group comparison table
 
@@ -145,25 +145,3 @@ The row uses the shared dataset, split, preprocessing, vocabulary, padding, clas
 ## 11. Critical analysis
 
 The GRU reaches 88% test accuracy on a balanced two-class task, well above the 50% chance level and above the 67.5% obtained from review length alone, so it is learning from the content. Its main weaknesses are rapid overfitting, over-confidence, and difficulty with mixed-sentiment reviews and with enthusiastic reviews written in an unfamiliar style. The reliability of every number here is limited by the size of the test set (160 reviews) and by a small drop from validation to test performance. The results are best read as a fair, reproducible baseline for comparison with the other three models, not as evidence that a GRU is generally better or worse than them.
-
-## 12. Optional extension: robustness to very short reviews (GRU only)
-
-*This extension is not part of the four-model comparison; the group table uses the main GRU of Sections 3 to 6.*
-
-**Problem.** The main GRU labels one-line negative reviews as positive (Section 9). Every training review has at least 25 words and positive reviews are shorter on average, so the model has learned that short text means positive.
-
-**Method.** The same GRU (same architecture, settings and seed) was trained on the 1,276 training reviews plus 2,528 short examples: two random chunks of one or two consecutive sentences cut from each *training* review, labelled with the label of the review they came from (median 22 words, 58% under 25 words). Validation and test data were not changed and no chunk was taken from them. Because a chunk inherits the whole review's label, some chunk labels are noisy.
-
-| | GRU (main) | GRU + short chunks |
-|---|---|---|
-| Validation accuracy (full reviews) | 0.9375 | 0.9437 |
-| Test accuracy / F1 / ROC-AUC | 0.8812 / 0.8758 / 0.9367 | 0.8875 / 0.8889 / 0.9436 |
-| Twelve one-line probes correct (negative ones, of 6) | 6 (0) | 11 (5) |
-| Twenty new one-liners correct (negative ones, of 10) | 10 (0) | 19 (10) |
-| Epochs / training time | 10 / about 14 s | 13 / about 54 s |
-
-The twelve probes were used while comparing variants; the twenty new one-liners were written after the variant was chosen and were not used to pick anything.
-
-**Findings.** The main GRU classified every one of the 16 negative one-liners (6 + 10) as positive, whereas the extension classified 15 of 16 correctly and missed one, "very bad place to visit never ever again visit to this place". The extension also misclassified one positive one-liner ("Spotless room, comfy beds, friendly reception.", P(positive) = 0.37). Test scores on full reviews are practically unchanged: the 0.006 accuracy difference is a single review out of 160, well within the test set's uncertainty (Section 6), so the extension should be described as *not harming* full-review performance, not as improving it. Training took about four times longer because the training set is about three times larger.
-
-**Limits.** One seed and small probe sets; chunk labels are noisy; and the extension still depends on individual words. For example, the miss above contains "visit", which occurs in about twice as many positive as negative training reviews. Using this approach for the group comparison would require all four models to be retrained on the same augmented training set.

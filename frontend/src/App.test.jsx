@@ -47,22 +47,20 @@ describe("Try it", () => {
     expect(analyze).toBeEnabled();
   });
 
-  it("shows an answer from both models when an example is picked", async () => {
+  it("shows an answer when an example is picked", async () => {
     await openApp();
     fireEvent.click(screen.getByRole("button", { name: "Positive" }));
     const text = example("positive").text;
     expect(screen.getByLabelText("Hotel review")).toHaveValue(text);
-    for (const [id, name] of [["main", "Main GRU"], ["short", "GRU + short examples"]]) {
-      expect(await screen.findByRole("article", { name: `${name}: ${expectedLabel(text, id)}` })).toBeInTheDocument();
-    }
-    expect(screen.getAllByRole("meter")).toHaveLength(2);
+    expect(await screen.findByRole("article", { name: `GRU: ${expectedLabel(text, "main")}` })).toBeInTheDocument();
+    expect(screen.getAllByRole("meter")).toHaveLength(1);
   });
 
   it("agrees with Keras for a negative review too", async () => {
     await openApp();
     fireEvent.click(screen.getByRole("button", { name: "Negative" }));
     const text = example("negative").text;
-    expect(await screen.findByRole("article", { name: `Main GRU: ${expectedLabel(text, "main")}` })).toBeInTheDocument();
+    expect(await screen.findByRole("article", { name: `GRU: ${expectedLabel(text, "main")}` })).toBeInTheDocument();
     expect(expectedLabel(text, "main")).toBe("Negative");
   });
 
@@ -83,7 +81,7 @@ describe("Try it", () => {
   it("tells you when the text was edited after the last analysis", async () => {
     await openApp();
     fireEvent.click(screen.getByRole("button", { name: "Positive" }));
-    await screen.findByRole("article", { name: /Main GRU/ });
+    await screen.findByRole("article", { name: /GRU/ });
     fireEvent.change(screen.getByLabelText("Hotel review"), { target: { value: "Something else entirely." } });
     expect(screen.getByText(/You have edited the text since this result/)).toBeInTheDocument();
   });
@@ -99,7 +97,7 @@ describe("Try it", () => {
   it("Clear empties the text and the result", async () => {
     await openApp();
     fireEvent.click(screen.getByRole("button", { name: "Positive" }));
-    await screen.findByRole("article", { name: /Main GRU/ });
+    await screen.findByRole("article", { name: /GRU/ });
     fireEvent.click(screen.getByRole("button", { name: "Clear" }));
     expect(screen.getByLabelText("Hotel review")).toHaveValue("");
     expect(screen.queryAllByRole("article")).toHaveLength(0);
@@ -112,7 +110,6 @@ describe("Results & about", () => {
     fireEvent.click(screen.getByRole("tab", { name: "Results & about" }));
     expect(await screen.findByRole("heading", { name: "How well it works" })).toBeInTheDocument();
     expect(screen.getAllByText(`${(results.main.accuracy * 100).toFixed(1)}%`).length).toBeGreaterThan(0);
-    expect(screen.getByRole("table")).toBeInTheDocument();
     expect(screen.getAllByRole("img").length).toBe(4);
   });
 
@@ -166,7 +163,7 @@ describe("Sidebar and Model Selection", () => {
     const gruBtn = screen.getByRole("button", { name: /GRU/ });
     fireEvent.click(gruBtn);
 
-    expect(await screen.findByText("GRU Reference Model")).toBeInTheDocument();
+    expect(await screen.findByText("GRU Model")).toBeInTheDocument();
     expect(screen.getByRole("tab", { name: "Try it" })).toBeInTheDocument();
   });
 });

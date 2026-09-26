@@ -79,7 +79,7 @@ export default function App({ load }) {
                 <div>
                   <div className="header-badge-row">
                     <h1>Hotel review sentiment</h1>
-                    <span className="status-badge active">GRU Reference Model</span>
+                    <span className="status-badge active">GRU Model</span>
                   </div>
                   <p className="muted">
                     A GRU deep-learning model that reads a review and predicts positive or negative

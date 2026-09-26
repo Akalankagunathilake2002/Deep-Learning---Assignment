@@ -72,7 +72,6 @@ The GRU part is **14 notebooks, one per step**, each in its own numbered folder 
 | `11_Error_Analysis/GRU_Error_Analysis.ipynb` | Counted the four outcomes, the per-class scores, errors by length and origin, and the most confident mistakes | Explains the result. Nothing is changed afterwards |
 | `12_Robustness_Check/GRU_Robustness_Check.ipynb` | Re-trained with 5 other random seeds | Shows the run-to-run spread (88.1% ± 1.6%). The headline stays seed 42 |
 | `13_Handover/GRU_Handover.ipynb` | Printed the row for the group table and listed the files | Everything the group needs in one place |
-| `14_Optional_Extension/GRU_Optional_Extension.ipynb` | Found that very short reviews fail, trained a second GRU with extra short examples, and built a "try your own reviews" demo | Optional and GRU only. It is not part of the comparison |
 
 Everything is saved in `gru/results/`, and the report section and viva notes are in `gru/docs/`.
 
@@ -116,7 +115,7 @@ For your own model, explain each layer the same way in your report: one sentence
 
 Note that **the model is defined in 7 of the notebooks in your copy** (07 to 13), not only in 07 and 08, because each notebook is self-contained and can rebuild the model on its own. So change the layer in **every** notebook that has a `build_*()` function, not just the first two. A find-and-replace across the folder is the safest way:
 
-1. Copy `gru/` to `lstm/` (or your model's folder name) and delete `results/`, `docs/` and `14_Optional_Extension/` (that one is GRU only).
+1. Copy `gru/` to `lstm/` (or your model's folder name) and delete `results/` and `docs/`.
 2. **1D CNN only, and do this first.** In every notebook, replace the line `layers.GRU(64),` with `layers.Conv1D(128, 5, activation="relu"),` followed by `layers.GlobalMaxPooling1D(),`. It appears once in each of notebooks 07 to 13. If you rename first (step 3), the line becomes `layers.CNN1D(64)`, which is not a layer.
 3. Replace `GRU` with your model's name (`LSTM`, `SimpleRNN` or `CNN1D`) and `gru` with the file prefix (`lstm`, `simple_rnn` or `cnn1d`) in every notebook (VS Code: *Edit → Replace in Files*, with **Match Case** on and the folder selected). This renames the functions and the result files (`gru_metrics.json` becomes `lstm_metrics.json`). For the LSTM and the Simple RNN it also swaps the layer (`layers.GRU(64)` becomes `layers.LSTM(64)` or `layers.SimpleRNN(64)`), so there is nothing more to change. Rename the folders and notebook files to match too, but keep `01_Setup` exactly as it is.
 4. **Check your copy.** Searching the folder for `GRU` or `gru` should find nothing in the code, and searching for `layers.` should show the same architecture in notebooks 07 to 13.
@@ -170,7 +169,7 @@ The final table has one row per model:
 
 - **The test set is small (160 reviews).** The GRU's 88.1% accuracy has a 95% range of 83.1% to 92.5%. Differences of a few points between models are within noise, so say that in the comparison. Use the predictions files and the seed spread to back it up.
 - **Length is a weak shortcut.** Negative reviews are longer (mean 180 vs 119 words), and a rule using length alone gets 67.5% on validation. With pre-padding a recurrent model can see how long a review is.
-- **Very short reviews.** Every training review has at least 25 words. The GRU labelled all 16 negative one-line reviews it was given as positive, so it is worth trying a few one-liners on your model too (notebook 14 has a list). Do not assume your model behaves the same way. If the group wants to fix this, the fix must be applied to all four models.
+- **Very short reviews.** Every training review has at least 25 words. The GRU labelled all 16 negative one-line reviews it was given as positive, so it is worth trying a few one-liners on your model too. Do not assume your model behaves the same way. This is reported as a shared limitation of the dataset; no model applies a fix for it, so the comparison stays fair.
 - **Over-confidence.** The GRU often gives more than 90% confidence to wrong answers.
 - **It overfits fast.** The GRU peaked at epoch 5 and stopped at epoch 10, so keep EarlyStopping.
 - **No class imbalance in this file** (800 positive, 800 negative). Class weights are about 1.0.
